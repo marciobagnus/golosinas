@@ -32,12 +32,19 @@
                         </asp:TemplateField>
 
                         <asp:TemplateField HeaderText="Cantidad">
-                            <ItemTemplate>
+                            <ItemTemplate >
                                 <asp:Button ID="btnPlus" runat="server" Width="25" Text="+" OnClick="btnPlus_Click"></asp:Button>
                                 &nbsp;
                                 <asp:Label ID="lbl_Cantidad" runat="server" Text="0"></asp:Label>
                                 &nbsp;
                         <asp:Button ID="btnMinus" runat="server" Width="25" Text="-" OnClick="btnMinus_Click"></asp:Button>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+
+                         <asp:TemplateField HeaderText="Precio Unitario" >
+                            <ItemTemplate>
+                                 <asp:Label ID="lbl_signo" Text="$" runat="server"></asp:Label>
+                                <asp:Label ID="lbl_precioUnitario" runat="server" Text="0"></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
 
@@ -48,9 +55,9 @@
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="Precio Unitario">
+                        <asp:TemplateField >
                             <ItemTemplate>
-                                <asp:Label ID="lbl_precioUnitario" runat="server" Text="0"></asp:Label>
+                                <asp:Button ID="btn_agregarAlCarrito" runat="server"  Text="Agregar al Carrito" OnClick="btnPlus_Click"></asp:Button>
                             </ItemTemplate>
                         </asp:TemplateField>
 
