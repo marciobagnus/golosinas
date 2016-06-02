@@ -1,0 +1,30 @@
+checkout-->> baja el repo
+update---->> actualiza cambios de otro
+
+commit-->sube cambios
+
+        primero update
+	luego hacer add
+	despues commit
+	OJO:
+	compilar codigo antes de subir cambios
+	No subir cambios si rompen integridad. En caso de conflicto, SOLUCIONARLO antes de hacer el commit
+*******	NO SUBIR: carpetas bin, obj, .vs
+		  archivos .sln .user .suo .tmp .dll  
+ PASAR A LISTA DE IGNORADOS (clic derecho, tortoiseSVN/ add to ignore list
+*********
+
+Para cambiar nombre de carpeta--->> tortoiseSVN/ rename HACER COMMIT
+
+Para eliminar carpeta--->> tortoiseSVN/ delete HACER COMMIT
+
+Para mover archivo/carpeta--->TORTOISE HACER COMMIT
+
+En caso de suceder que renombramos sin querer, al hacer el commit seleccionar ambos archivos y clic en repair move
+
+
+Si haces un revert, se puede deshacer , los archivos los guarda en la papelera
+
+Usar EXPORT si queres una copia limpia sin los archivos .svn
+
+Usar diff para ver diferencias entre dos archivos
