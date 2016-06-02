@@ -75,28 +75,6 @@
             <span></span>
         </div>
 
-
-        <%--   <%-- <asp:GridView ID="grillaGolosinas" CssClass="table table-bordered bs-table" HeaderStyle-BackColor="#cc6600" AutoGenerateColumns="false" runat="server" OnSelectedIndexChanged="grillaGolosinas_SelectedIndexChanged">
-          <Columns>
-                <asp:BoundField HeaderText="ID" DataField="idProvincia" />
-                <asp:BoundField HeaderText="Provincia" DataField="nombre" />
-
-                <asp:TemplateField HeaderText="Cantidad">
-                    <ItemTemplate>
-                        <asp:TextBox ID="txt_cantidad" Text='<%# Bind("cantidad") %>' Width="20px" CssClass="center" runat="server"></asp:TextBox>
-                        <asp:Button ID="btn_cantidad" OnClick="btn_agregar_Click" Text="+" CssClass="center" runat="server"></asp:Button>
-                    </ItemTemplate>
-                </asp:TemplateField>
-
-                <asp:ButtonField Text="Agregar" />
-
-            </Columns>
-
-
-            <HeaderStyle BackColor="#CC6600"></HeaderStyle>
-
-
-        </asp:GridView>--%>
         <br />
     </div>
     <div class="col-lg-2"></div>
