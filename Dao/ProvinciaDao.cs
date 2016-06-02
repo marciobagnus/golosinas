@@ -12,7 +12,7 @@ namespace Dao
     public class ProvinciaDao
     {
         
-        public static List<ProvinciaEntidad> ObtenerProvincia()
+        public static List<ProvinciaEntidad> ObtenerProvincias()
         {
             SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
             con.Open();
