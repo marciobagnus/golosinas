@@ -37,7 +37,7 @@
                                 &nbsp;
                                 <asp:Label ID="lbl_Cantidad" runat="server" Text="0"></asp:Label>
                                 &nbsp;
-                        <asp:Button ID="btnMinus" runat="server" Width="25" Text="-" OnClick="btnMinus_Click"></asp:Button>
+                                <asp:Button ID="btnMinus" runat="server" Width="25" Text="-" OnClick="btnMinus_Click"></asp:Button>
                             </ItemTemplate>
                         </asp:TemplateField>
 

@@ -101,7 +101,7 @@ public partial class Pedidos : System.Web.UI.Page
 
     protected void btn_agregarAlCarrito_Click(object sender, EventArgs e)
     {
-
+        lbl_precioTotal.Text = "millones";
     }
 }
 
