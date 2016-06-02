@@ -36,7 +36,7 @@ public partial class GolosinasWF : System.Web.UI.Page
 
     private void cargarProvincias()
     {
-        List<ProvinciaEntidad> listaProv = ProvinciaDao.ObtenerProvincia();
+        List<ProvinciaEntidad> listaProv = ProvinciaDao.ObtenerProvincias();
         //Vaciar comboBox
         cmb_provincia.DataSource = null;
 
