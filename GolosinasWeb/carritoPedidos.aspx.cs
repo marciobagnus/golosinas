@@ -12,13 +12,40 @@ public partial class carritoPedidos : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        List<GridViewRow> filaGrilla = new List<GridViewRow>();
+
         // Check
         if (!IsPostBack)
         {
-            // Variable
-            grillaGolosinas.DataSource = ProvinciaDao.ObtenerProvincias();
+            string[] golosina = { "Caramelo Arcor", "Chocolate 20g", "Chocolate 100g", "Chupetin", "Chicle" };
+            string[] precioUnitario = { "2", "10", "25", "5", "1" };
+            string[] subtotal = { "0", "0", "0", "0", "0" };
+            DataTable dt = new DataTable();
+            dt.Columns.Add("nombre");
+            dt.Columns.Add("precioUnitario");
+            dt.Columns.Add("subtotal");
+
+
+            for (int i = 0; i < golosina.Length; i++)
+            {
+                DataRow workRow = dt.NewRow();
+                workRow[0] = golosina[i];
+                workRow[1] = precioUnitario[i];
+                workRow[2] = subtotal[i];
+                dt.Rows.Add(workRow);
+            }
+
+
+
+            grillaGolosinas.DataSource = dt;
             grillaGolosinas.DataBind();
+
+            // Dispose
+            dt.Dispose();
+
+
+            // Variable
+            //grillaGolosinas.DataSource = ProvinciaDao.ObtenerProvincias();
+            //grillaGolosinas.DataBind();
 
         }
     }
@@ -82,9 +109,9 @@ public partial class carritoPedidos : System.Web.UI.Page
     }
 
 
-    protected List<GolosinasXCarritoEntidad> ListaTE
+    protected List<GolosinasXCarritoEntidad> ListaCarrito
     {
-       
+
         get
         {
             if (Session["ListaGolisinas"] == null)
@@ -99,31 +126,48 @@ public partial class carritoPedidos : System.Web.UI.Page
 
     protected void btn_agregarAlCarrito_Click(object sender, EventArgs e)
     {
- 
-
-
-
-
-
-
         // Get
         Button btn = sender as Button;
         GridViewRow row = btn.NamingContainer as GridViewRow;
-        // Variable
-        bool isNumber = false;
-       double subtotal = 0;
 
-        // Find Control
+        Label lbl_nombre = row.FindControl("lbl_producto") as Label;
+        Label lbl_precioUnitario = row.FindControl("lbl_precioUnitario") as Label;
+        Label lbl_subtotal = row.FindControl("lbl_subtotal") as Label;
+        Label lbl_cantidad = row.FindControl("lbl_cantidad") as Label;
 
-        double total = 0;
-        for (int i = 0; i < grillaGolosinas.Rows.Count; i++)
+        ListaCarrito.Add(new GolosinasXCarritoEntidad
         {
-            Label lbl_subtotal = grillaGolosinas.Rows[i].FindControl("lbl_subtotal") as Label;
-
-             total =total + double.Parse(lbl_subtotal.Text.Trim());
-
+            nombre = lbl_nombre.Text,
+            precioUnitario = double.Parse(lbl_precioUnitario.Text),
+            subtotal = double.Parse(lbl_subtotal.Text),
+            cantidad=int.Parse(lbl_cantidad.Text)
         }
-           lbl_precioTotal.Text = total.ToString();
+        );
+
+        grillaCarrito.DataSource = ListaCarrito;
+        grillaCarrito.DataBind();
+
+
+
+
+        //// Get
+        //Button btn = sender as Button;
+        //GridViewRow row = btn.NamingContainer as GridViewRow;
+        //// Variable
+        //bool isNumber = false;
+        //double subtotal = 0;
+
+        //// Find Control
+
+        //double total = 0;
+        //for (int i = 0; i < grillaGolosinas.Rows.Count; i++)
+        //{
+        //    Label lbl_subtotal = grillaGolosinas.Rows[i].FindControl("lbl_subtotal") as Label;
+
+        //    total = total + double.Parse(lbl_subtotal.Text.Trim());
+
+        //}
+        //lbl_precioTotal.Text = total.ToString();
 
 
     }

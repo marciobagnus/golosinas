@@ -23,7 +23,7 @@
                     <Columns>
                         <asp:TemplateField HeaderText="Producto">
                             <ItemTemplate>
-                                <asp:Label ID="lblProduct" runat="server" Text='<%# Eval("nombre") %>'></asp:Label>
+                                <asp:Label ID="lbl_producto" runat="server" Text='<%# Eval("nombre") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Cantidad">
@@ -37,14 +37,14 @@
                         <asp:TemplateField HeaderText="Precio Unitario">
                             <ItemTemplate>
                                 <asp:Label ID="lbl_signo" Text="$" runat="server"></asp:Label>
-                                <asp:Label ID="lbl_precioUnitario" runat="server" Text="5"></asp:Label>
+                                <asp:Label ID="lbl_precioUnitario" runat="server" Text='<%# Eval("precioUnitario") %>'></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
 
                         <asp:TemplateField HeaderText="Precio">
                             <ItemTemplate>
                                 <asp:Label ID="lbl_signo2" Text="$" runat="server"></asp:Label>
-                                <asp:Label ID="lbl_subtotal" Text="0" runat="server"></asp:Label>
+                                <asp:Label ID="lbl_subtotal" Text='<%# Eval("subtotal") %>' runat="server"></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
 
@@ -69,12 +69,13 @@
         
         </div>
 
-        <div class="">
+        <div>
             <asp:GridView ID="grillaCarrito" runat="server" CssClass="table table-bordered bs-table" HeaderStyle-BackColor="#cc6600">
                 <Columns>
                      <asp:TemplateField HeaderText="Producto">
+
                      <ItemTemplate>
-                                <asp:Label ID="lblProduct" runat="server" Text='<%# Eval("nombre") %>'></asp:Label>
+                                <asp:Label ID="lbl_producto" runat="server" Text=""></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
                         <asp:TemplateField HeaderText="Cantidad">
@@ -88,7 +89,7 @@
                         <asp:TemplateField HeaderText="Precio Unitario">
                             <ItemTemplate>
                                 <asp:Label ID="lbl_signo" Text="$" runat="server"></asp:Label>
-                                <asp:Label ID="lbl_precioUnitario" runat="server" Text="5"></asp:Label>
+                                <asp:Label ID="lbl_precioUnitario" runat="server" Text=""></asp:Label>
                             </ItemTemplate>
                         </asp:TemplateField>
 

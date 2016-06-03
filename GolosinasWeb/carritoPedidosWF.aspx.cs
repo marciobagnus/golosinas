@@ -31,7 +31,7 @@ public partial class Pedidos : System.Web.UI.Page
             //for (int i = 0; i < product.Length; i++)
             //    dt.Rows.Add(product[i]);
 
-            grillaGolosinas.DataSource = ProvinciaDao.ObtenerProvincia();
+            grillaGolosinas.DataSource = ProvinciaDao.ObtenerProvincias();
             grillaGolosinas.DataBind();
 
             // Dispose
