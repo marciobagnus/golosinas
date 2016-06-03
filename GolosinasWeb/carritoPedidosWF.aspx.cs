@@ -50,12 +50,36 @@ public partial class carritoPedidos : System.Web.UI.Page
 
             }
 
+            DateTime hoy = DateTime.Today;
+            lbl_fechaPedido.Text = hoy.ToString("dd/MM/yyyy");
+            lbl_fechaEntrega.Text = hoy.AddDays(5).ToString("dd/MM/yyyy");
+            cargarProveedores();
 
             // Variable
             //grillaGolosinas.DataSource = ProvinciaDao.ObtenerProvincias();
             //grillaGolosinas.DataBind();
 
         }
+    }
+    private void cargarProveedores()
+    {
+        List<ProveedoresEntidad> listaProv = ProveedoresDao.ObtenerTodos();
+        //Vaciar comboBox
+        cmb_proveedores.DataSource = null;
+
+        //Indicar qué propiedad se verá en la lista
+        cmb_proveedores.DataTextField = "razonSocial";
+
+        //Indicar qué valor tendrá cada ítem
+        cmb_proveedores.DataValueField = "idProveedor";
+
+        //Asignar la propiedad DataSource
+        cmb_proveedores.DataSource = listaProv;
+
+        cmb_proveedores.SelectedIndex = 1;
+        cmb_proveedores.DataBind();
+
+
     }
 
     private void DoTheMath(GridViewRow row, bool isAdd)
@@ -176,11 +200,7 @@ public partial class carritoPedidos : System.Web.UI.Page
         grillaCarrito.DataSource = ListaCarrito;
         grillaCarrito.DataBind();
 
-        double total = 0;
-        for (int i = 0; i < ListaCarrito.Count; i++)
-            total = total + ListaCarrito[i].subtotal;
-
-        lbl_precioTotal.Text = total.ToString();
+        sumarCarrito();
         lbl_cantidad.Text = "0";
         lbl_subtotal.Text = "0";
 
@@ -189,6 +209,15 @@ public partial class carritoPedidos : System.Web.UI.Page
 
     }
 
+
+    private void sumarCarrito()
+    {
+        double total = 0;
+        for (int i = 0; i < ListaCarrito.Count; i++)
+            total = total + ListaCarrito[i].subtotal;
+
+        lbl_precioTotal.Text = total.ToString();
+    }
 
 
     protected void btnQuitar_Click(object sender, EventArgs e)
@@ -208,8 +237,13 @@ public partial class carritoPedidos : System.Web.UI.Page
             }
         }
 
-
+        sumarCarrito();
         grillaCarrito.DataSource = ListaCarrito;
         grillaCarrito.DataBind();
+    }
+
+    protected void btn_generarPedido_Click(object sender, EventArgs e)
+    {
+
     }
 }

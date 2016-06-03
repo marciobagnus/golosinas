@@ -13,10 +13,26 @@
 </asp:Content>
 
 
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlacePrincipal" runat="Server">
-
-    <div class="row center-block">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlacePrincipal1" runat="Server">
+    <div class="jumbotron">
         <h1>Listado Golosinas para Pedido</h1>
+    </div>
+
+
+    <div class="row center-block panel panel-default">
+
+        <br />
+        <label>Listado de Proveedores: </label>
+        <asp:DropDownList ID="cmb_proveedores" runat="server"></asp:DropDownList>
+        <br />
+        <br />
+        <label>Fecha de Pedido: </label>
+        <asp:Label ID="lbl_fechaPedido" runat="server"></asp:Label>
+        <br />
+        <br />
+        <label>Fecha de Entrega: </label>
+        <asp:Label ID="lbl_fechaEntrega" runat="server"></asp:Label>
+
     </div>
 
     <br />
@@ -24,7 +40,9 @@
     <div class="row">
         <div class="panel panel-default col-lg-6">
 
-            <asp:GridView ID="grillaGolosinas" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered bs-table" HeaderStyle-BackColor="#cc6600">
+
+
+            <asp:GridView ID="grillaGolosinas" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered bs-table left" HeaderStyle-BackColor="#cc6600">
                 <Columns>
 
 
@@ -42,7 +60,7 @@
 
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField HeaderText="Precio Unitario">
+                    <asp:TemplateField HeaderStyle-Width="50" HeaderText="Precio Unitario">
                         <ItemTemplate>
                             <asp:Label ID="lbl_signo" Text="$" runat="server"></asp:Label>
                             <asp:Label ID="lbl_precioUnitario" runat="server" Text='<%# Eval("precioUnitario") %>'></asp:Label>
@@ -65,11 +83,17 @@
             </asp:GridView>
 
         </div>
-        <div class="col-lg-2"></div>
+        <div class="col-lg-1"></div>
 
-        <div class="panel panel-default col-lg-4">
+        <div class="panel panel-default col-lg-5">
 
-            <asp:GridView ID="grillaCarrito" runat="server" CssClass="table table-bordered bs-table" AutoGenerateColumns="false" HeaderStyle-BackColor="#009900">
+            <div class="text-uppercase text-right text-info">
+                <asp:Label Text="Precio Total: $" runat="server"></asp:Label>
+                <asp:Label ID="lbl_precioTotal" Text='<%# Eval("precioTotal") %>' runat="server"></asp:Label>
+            </div>
+
+
+            <asp:GridView ID="grillaCarrito" runat="server" CssClass="table table-bordered bs-table right" AutoGenerateColumns="false" HeaderStyle-BackColor="#009900">
                 <Columns>
                     <asp:TemplateField HeaderText="Producto">
                         <ItemTemplate>
@@ -99,15 +123,16 @@
                 </Columns>
             </asp:GridView>
 
-            <div class="text-uppercase text-right">
-                <asp:Label Text="Precio Total: " runat="server"></asp:Label>
-                <asp:Label ID="lbl_precioTotal" Text='<%# Eval("precioTotal") %>' runat="server"></asp:Label>
-            </div>
+
 
 
             <br />
         </div>
     </div>
+
+    <asp:Button ID="btn_generarPedido" Text="Generar Pedido" CssClass="btn btn-danger center-block" runat="server" OnClick="btn_generarPedido_Click" />
+
+
 
 </asp:Content>
 
