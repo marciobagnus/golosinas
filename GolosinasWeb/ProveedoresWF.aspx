@@ -37,7 +37,7 @@
 
     <br />
     <br />
-    <asp:GridView ID="grid_proveedores" CssClass="text-center" AutoGenerateColumns="false" OnSelectedIndexChanged="grid_proveedores_SelectedIndexChanged" runat="server">
+    <asp:GridView ID="grid_proveedores" CssClass="table table-hover table-striped" AutoGenerateColumns="false" OnSelectedIndexChanged="grid_proveedores_SelectedIndexChanged" runat="server">
         <Columns>
             <asp:CommandField SelectText="Seleccionar" ItemStyle-CssClass="col-lg-3 text-center" ShowSelectButton="True" />
             <asp:BoundField DataField="razonSocial" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Razon Social" />

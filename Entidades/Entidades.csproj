@@ -40,10 +40,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GolosinaEntidad.cs" />
     <Compile Include="GolosinasXCarritoEntidad.cs" />
     <Compile Include="ProveedoresEntidad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinciaEntidad.cs" />
+    <Compile Include="TipoGolosinaEntidad.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
