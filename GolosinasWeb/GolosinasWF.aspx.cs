@@ -13,6 +13,7 @@ public partial class GolosinasWF : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
+            divResultado.Visible = false;
             btnEliminar.Enabled = false;
             btnEliminar.CssClass = "btn btn-warning disabled";
             CargarGrilla();
@@ -39,6 +40,8 @@ public partial class GolosinasWF : System.Web.UI.Page
 
     protected void btnGuardar_Click(object sender, EventArgs e)
     {
+        try
+        {       
         GolosinaEntidad golosina = new GolosinaEntidad();
 
         golosina.nombre = txtNombre.Text;
@@ -72,6 +75,12 @@ public partial class GolosinasWF : System.Web.UI.Page
         
         CargarGrilla();
         Limpiar();
+        }
+        catch(Exception ex)
+        {
+            divResultado.Visible = true;
+            txtResultado.Text = "Ha ocurrido el siguiente error: " + ex.Message;
+        }
     }
 
     protected void Limpiar()
@@ -83,8 +92,8 @@ public partial class GolosinasWF : System.Web.UI.Page
         txtStockM.Text = string.Empty;
         chkCeliaco.Checked = false;
         ddlTipoG.SelectedIndex = 0;
-        
 
+        divResultado.Visible = false;
         btnEliminar.Enabled = false;
         btnEliminar.CssClass = "btn btn-warning";
     }
@@ -132,5 +141,13 @@ public partial class GolosinasWF : System.Web.UI.Page
         GolosinaDao.Eliminar(ID.Value);
         CargarGrilla();
         Limpiar();
+    }
+
+    protected void btnBuscar_Click(object sender, EventArgs e)
+    {
+        //Establezco la fuente de los datos de la grilla
+        grdGolosinas.DataSource = GolosinaDao.ObtenerPorIncremento(txtGolosinaABuscar.Text);  
+        //Indico que llene la grilla
+        grdGolosinas.DataBind();
     }
 }

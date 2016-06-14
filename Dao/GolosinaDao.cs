@@ -8,17 +8,21 @@ using Entidades;
 using System.Configuration;
 
 namespace Dao
-{ 
+{
     public class GolosinaDao
     {
         public static void Insertar(GolosinaEntidad golosina)
         {
-            SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
-            cn.Open();
 
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = cn;
-            cmd.CommandText = @"INSERT into Golosina(nombre,
+
+            if (!Existe(golosina.nombre))
+            {
+                SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
+                cn.Open();
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = cn;
+                cmd.CommandText = @"INSERT into Golosina(nombre,
                                 precioCompra, precioVenta,
                                 stockActual, stockMinimo,
                                 listoParaPedir, idTipoGolosina, esAptoCeliaco)
@@ -27,20 +31,84 @@ namespace Dao
                                 @stockActual, @stockMinimo,
                                 @listoParaPedir, @idTipoGolosina, @esAptoCeliaco);select Scope_Identity() as ID";
 
-            cmd.Parameters.AddWithValue("@nombre", golosina.nombre);
-            cmd.Parameters.AddWithValue("@precioCompra", golosina.precioCompra);
-            cmd.Parameters.AddWithValue("@precioVenta", golosina.precioVenta);
-            cmd.Parameters.AddWithValue("@stockActual", golosina.stockActual);
-            cmd.Parameters.AddWithValue("@stockMinimo", golosina.stockMinimo);
-            cmd.Parameters.AddWithValue("@listoParaPedir", golosina.listoParaPedir);
-            cmd.Parameters.AddWithValue("@idTipoGolosina", golosina.idTipoGolosina);
-            cmd.Parameters.AddWithValue("@esAptoCeliaco", golosina.esAptoCeliaco);
+                cmd.Parameters.AddWithValue("@nombre", golosina.nombre);
+                cmd.Parameters.AddWithValue("@precioCompra", golosina.precioCompra);
+                cmd.Parameters.AddWithValue("@precioVenta", golosina.precioVenta);
+                cmd.Parameters.AddWithValue("@stockActual", golosina.stockActual);
+                cmd.Parameters.AddWithValue("@stockMinimo", golosina.stockMinimo);
+                cmd.Parameters.AddWithValue("@listoParaPedir", golosina.listoParaPedir);
+                cmd.Parameters.AddWithValue("@idTipoGolosina", golosina.idTipoGolosina);
+                cmd.Parameters.AddWithValue("@esAptoCeliaco", golosina.esAptoCeliaco);
 
-            golosina.idGolosina = Convert.ToInt32(cmd.ExecuteScalar());
+                golosina.idGolosina = Convert.ToInt32(cmd.ExecuteScalar());
 
-            cn.Close();
+                cn.Close();
+            }
+            else
+            {
+                throw new ApplicationException("El nombre ya existe");
+            }
+
+           
 
         }
+
+        private static bool Existe(string nombre)
+        {
+            SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
+            cn.Open();
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = @"SELECT COUNT(*) FROM Golosina WHERE nombre=@nombre";
+
+
+            cmd.Parameters.AddWithValue("@nombre", nombre);
+            int count = Convert.ToInt32(cmd.ExecuteScalar());
+            if (count == 0)
+                return false;
+            else
+                return true;
+        }
+
+        public static List<GolosinaEntidad> ObtenerPorIncremento(string incr)
+        {
+            List<GolosinaEntidad> listGolosinas = new List<GolosinaEntidad>();
+            SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
+            cn.Open();
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = @"SELECT idGolosina, nombre,
+                                precioCompra, precioVenta,
+                                stockActual, stockMinimo,
+                                listoParaPedir, idTipoGolosina, esAptoCeliaco
+                                FROM Golosina where nombre Like @incr";
+                    
+            cmd.Parameters.AddWithValue("@incr", "%" + incr + "%");
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+                GolosinaEntidad g = new GolosinaEntidad();
+               g.idGolosina = int.Parse(dr["idGolosina"].ToString());
+                g.nombre = dr["nombre"].ToString();
+                g.precioCompra = float.Parse(dr["precioCompra"].ToString());
+                g.precioVenta = float.Parse(dr["precioVenta"].ToString());
+                g.stockActual = int.Parse(dr["stockActual"].ToString());
+                g.stockMinimo = int.Parse(dr["stockMinimo"].ToString());
+                g.listoParaPedir = (bool)dr["listoParaPedir"];
+                g.idTipoGolosina = int.Parse(dr["idTipoGolosina"].ToString());
+                g.esAptoCeliaco = (bool)dr["esAptoCeliaco"];
+
+                listGolosinas.Add(g);
+
+            }
+            dr.Close();
+            cn.Close();
+            return listGolosinas;
+
+        }
+
 
         public static void Actualizar(GolosinaEntidad golosina)
         {
@@ -81,7 +149,7 @@ namespace Dao
             cmd.Connection = cn;
             cmd.CommandText = @"DELETE from Golosina WHERE idGolosina=@idGolosina";
 
-            cmd.Parameters.AddWithValue("@idGolosina",id);
+            cmd.Parameters.AddWithValue("@idGolosina", id);
 
             cmd.ExecuteNonQuery();
 
@@ -103,7 +171,7 @@ namespace Dao
                                 FROM Golosina";
             SqlDataReader dr = cmd.ExecuteReader();
 
-            while(dr.Read())
+            while (dr.Read())
             {
                 GolosinaEntidad g = new GolosinaEntidad();
 
@@ -128,7 +196,7 @@ namespace Dao
         public static GolosinaEntidad ObtenerPorID(int id)
         {
             GolosinaEntidad g = null;
-          
+
             SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
             cn.Open();
 
@@ -144,7 +212,7 @@ namespace Dao
 
             if (dr.Read())
             {
-                g = new GolosinaEntidad();           
+                g = new GolosinaEntidad();
                 g.idGolosina = int.Parse(dr["idGolosina"].ToString());
                 g.nombre = dr["nombre"].ToString();
                 g.precioCompra = float.Parse(dr["precioCompra"].ToString());
@@ -153,9 +221,9 @@ namespace Dao
                 g.stockMinimo = int.Parse(dr["stockMinimo"].ToString());
                 g.listoParaPedir = (bool)dr["listoParaPedir"];
                 g.idTipoGolosina = int.Parse(dr["idTipoGolosina"].ToString());
-                g.esAptoCeliaco = (bool)dr["esAptoCeliaco"]; 
-                
-            }            
+                g.esAptoCeliaco = (bool)dr["esAptoCeliaco"];
+
+            }
             dr.Close();
             cn.Close();
             return g;

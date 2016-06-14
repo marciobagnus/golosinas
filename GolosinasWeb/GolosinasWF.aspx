@@ -1,18 +1,54 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master"
-     AutoEventWireup="true" CodeFile="GolosinasWF.aspx.cs" Inherits="GolosinasWF" %>
+    AutoEventWireup="true" CodeFile="GolosinasWF.aspx.cs" Inherits="GolosinasWF" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolderPrincipal" runat="Server">
-    <br />
-    <br />
-    <br />
+    <script type="text/javascript" src="../js/jquery-3.0.0.min.js"></script>
+    <link href="../css/jquery-uii.css" rel="stylesheet" type="text/css" />
+
+
+    <script type="text/javascript">
+        $(function () {
+            $("[id*=btnEliminar]").removeAttr("onclick");
+            $("#dialog").dialog({
+                modal: true,
+                autoOpen: false,
+                title: "Confirmación",
+                width: 350,
+                height: 180,
+                buttons: [
+            {
+                id: "Yes",
+                text: "Si",
+                click: function () {
+                    $("[id*=btnEliminar]").attr("rel", "delete");
+                    $("[id*=btnEliminar]").click();
+                }
+            },
+            {
+                id: "No",
+                text: "No",
+                click: function () {
+                    $(this).dialog('close');
+                }
+            }
+                ]
+            });
+            $("[id*=btnEliminar]").click(function () {
+                if ($(this).attr("rel") != "delete") {
+                    $('#dialog').dialog('open');
+                    return false;
+                } else {
+                    __doPostBack(this.name, '');
+                }
+            });
+        });
+    </script>
     <h1 class="text-center">Golosinas</h1>
-    <br />
-    <br />
     <div class="form-group">
         <label for="txtNombre">Nombre</label>
-        <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control" placeholder="Ingrese nombre de golosina"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control" class="masterTooltip" title="Ingrese nombre de golosina"></asp:TextBox>
         <asp:RequiredFieldValidator ID="rfvNombre"
             runat="server"
             ControlToValidate="txtNombre"
@@ -20,10 +56,15 @@
             CssClass="alert-danger" Display="Dynamic"
             Text="*" ValidationGroup="A" />
         <asp:RegularExpressionValidator ID="rvNombre"
-             runat="server" ErrorMessage="Ingrese un Nombre valido"
-             ControlToValidate="txtNombre" ValidationExpression="^[a-zA-Z ]*$"
-             CssClass="alert-danger"
-             Display="Dynamic"></asp:RegularExpressionValidator>
+            runat="server" ErrorMessage="Ingrese un Nombre valido"
+            ControlToValidate="txtNombre" ValidationExpression="^[a-zA-Z ]*$"
+            CssClass="alert-danger"
+            Display="Dynamic"></asp:RegularExpressionValidator>
+    </div>
+
+    <div class="form-group" id="divResultado" runat="server" visible="false">
+
+        <asp:TextBox TextMode="MultiLine" runat="server" ID="txtResultado" CssClass="form-control"></asp:TextBox>
     </div>
     <div class="form-group">
         <label for="ddlTipoG">Tipo de golosina</label>
@@ -127,8 +168,16 @@
 
     <asp:Button ID="btnGuardar" runat="server" Text="Guardar" class="btn btn-default" ValidationGroup="A" OnClick="btnGuardar_Click" />
     <asp:Button ID="btnNuevo" runat="server" Text="Nuevo" class="btn btn-default" ValidationGroup="B" OnClick="btnNuevo_Click" />
-    <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" class="btn btn-warning" CausesValidation="False" OnClick="btnEliminar_Click" />
+    <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" class="btn btn-warning" CausesValidation="False" OnClick="btnEliminar_Click" UseSubmitBehavior="false" />
+    <div id="dialog" style="display: none" align="center">
+        ¿Desea eliminar la golosina?
+    </div>
 
+    <div class="form-group">
+        <label for="txtGolosinaABuscar">Golosina a buscar:</label>
+        <asp:TextBox runat="server" ID="txtGolosinaABuscar" CssClass="form-control" placeholder=""></asp:TextBox>
+        <asp:Button ID="btnBuscar" runat="server" Text="Buscar" class="btn btn-default" OnClick="btnBuscar_Click" />
+    </div>
     <div class="form-group" id="divGrilla" runat="server">
         <asp:GridView ID="grdGolosinas" AutoGenerateColumns="False" runat="server" CssClass="table table-bordered bs-table" DataKeyNames="idGolosina" OnSelectedIndexChanged="grdGolosinas_SelectedIndexChanged">
             <Columns>
@@ -137,11 +186,22 @@
                 <asp:BoundField DataField="precioCompra" HeaderText="Precio Cpra" />
                 <asp:BoundField DataField="precioVenta" HeaderText="Precio Vta" />
                 <asp:BoundField DataField="stockActual" HeaderText="Stock Actual" />
-                <asp:BoundField DataField="stockMinimo" HeaderText="StockMinimo" />
-                <asp:BoundField DataField="listoParaPedir" HeaderText="Pedir?" />
-                <asp:BoundField DataField="esAptoCeliaco" HeaderText="Celiacos" />
+                <asp:BoundField DataField="stockMinimo" HeaderText="StockMinimo" />                
+
+                <asp:TemplateField HeaderText="¿Pedir?" >
+                    <ItemTemplate><%# (Boolean.Parse(Eval("listoParaPedir").ToString())) ? "Si" : "No" %></ItemTemplate>
+                </asp:TemplateField>
+                
+                <asp:TemplateField HeaderText="Celiacos" >
+                    <ItemTemplate><%# (Boolean.Parse(Eval("esAptoCeliaco").ToString())) ? "Si" : "No" %></ItemTemplate>
+                </asp:TemplateField>
+
             </Columns>
+
         </asp:GridView>
+
+
+
     </div>
 
 
