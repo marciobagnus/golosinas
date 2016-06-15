@@ -54,7 +54,7 @@
 
                         </ul>
                     </li>
-                    <li><a href="~/" runat="server">Clientes</a></li>
+                    <li><a href="~/ClientesWF.aspx" runat="server">Clientes</a></li>
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">
