@@ -57,4 +57,16 @@ public partial class GolosinaQueryWF : System.Web.UI.Page
 
 
     }
+
+    protected void gvInforme_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
+    }
+
+    protected void gvInforme_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        gvInforme.PageIndex = e.NewPageIndex;
+        CargarGrilla();
+
+    }
 }

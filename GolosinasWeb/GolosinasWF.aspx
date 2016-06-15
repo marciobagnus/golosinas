@@ -103,7 +103,7 @@
         </asp:RangeValidator>
         <asp:RegularExpressionValidator ID="revPrecioC"
              runat="server" ControlToValidate="txtPrecioC"
-            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese un precio Valido"
+            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
             ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
         </asp:RegularExpressionValidator>
     </div>
@@ -129,7 +129,7 @@
         </asp:RangeValidator>
         <asp:RegularExpressionValidator ID="revPrecioV"
              runat="server" ControlToValidate="txtPrecioV"
-            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese un precio Valido"
+            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
             ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
         </asp:RegularExpressionValidator>
     </div>
@@ -155,7 +155,7 @@
         </asp:RangeValidator>
         <asp:RegularExpressionValidator ID="revStockA"
              runat="server" ControlToValidate="txtStockA"
-            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese un numero Valido"
+            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
             ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
         </asp:RegularExpressionValidator>
     </div>
@@ -178,6 +178,11 @@
             CssClass="alert-danger" Display="Dynamic"
             Text="*" ValidationGroup="A">
         </asp:RangeValidator>
+        <asp:RegularExpressionValidator ID="revStockM"
+             runat="server" ControlToValidate="txtStockM"
+            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
+            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+        </asp:RegularExpressionValidator>
 
     </div>
 

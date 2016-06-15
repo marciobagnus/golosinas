@@ -3,31 +3,66 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolderPrincipal" runat="Server">
-
-    <label id="lblTipo">Tipo Golosina</label>
-     <asp:DropDownList ID="ddlTipo" runat="server" AppendDataBoundItems="true">
+    <h1 class="text-center">Informe de Stock</h1>
+    <div class="form-group">
+        <label for="ddlTipo" id="lblTipo">Tipo Golosina</label>
+        <asp:DropDownList ID="ddlTipo" runat="server" CssClass="form-control" AppendDataBoundItems="true">
             <asp:ListItem Value="null">Seleccione..</asp:ListItem>
         </asp:DropDownList>
-    
-    <br />
-    <label id="lblCeliaco">Celiacos</label>
-    <asp:DropDownList ID="ddlCeliaco" runat="server" AppendDataBoundItems="true">
-        <asp:ListItem Value="null">Todos</asp:ListItem>
-        <asp:ListItem Value="true">Si</asp:ListItem>
-        <asp:ListItem Value="false">No</asp:ListItem>
-    </asp:DropDownList>
-      
-    
-    <br />
-    <label id="lblPrecioCDesde">Precio Compra Desde</label>
-    <asp:TextBox ID="txtPrecioCDesde" runat="server"></asp:TextBox>
-    <br />
-    <label id="lblPrecioCHasta">Precio Compra Hasta</label>
-    <asp:TextBox ID="txtPrecioCHasta" runat="server"></asp:TextBox>
-    <br />
-    <asp:Button ID="btnBuscar" Text="Buscar" runat="server" OnClick="btnBuscar_Click" />
-    <br />
-    <asp:GridView ID="gvInforme" runat="server" AutoGenerateColumns="False">
+
+    </div>
+
+    <div class="form-group">
+        <label for="ddlCeliaco" id="lblCeliaco">Celiacos</label>
+        <asp:DropDownList ID="ddlCeliaco" CssClass="form-control" runat="server" AppendDataBoundItems="true">
+            <asp:ListItem Value="null">Todos</asp:ListItem>
+            <asp:ListItem Value="true">Si</asp:ListItem>
+            <asp:ListItem Value="false">No</asp:ListItem>
+        </asp:DropDownList>
+    </div>
+    <div class="form-group">
+        <label for="txtPrecioCDesde" id="lblPrecioCDesde">Precio Compra Desde</label>
+        <asp:TextBox ID="txtPrecioCDesde" CssClass="form-control" runat="server"></asp:TextBox>
+        <asp:RangeValidator ID="rvPrecioC"
+            ControlToValidate="txtPrecioCDesde"
+            runat="server" Type="Double"
+            CssClass="alert-danger" Display="Dynamic"
+            MaximumValue="50000"
+            MinimumValue="1"
+            ErrorMessage="Precio de Compra debe estar entre 1 y 50000"
+            Text="*" ValidationGroup="A">
+        </asp:RangeValidator>
+        <asp:RegularExpressionValidator ID="revPrecioCD"
+            runat="server" ControlToValidate="txtPrecioCDesde"
+            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
+            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+        </asp:RegularExpressionValidator>
+    </div>
+
+    <div class="form-group">
+        <label for="txtPrecioCHasta" id="lblPrecioCHasta">Precio Compra Hasta</label>
+        <asp:TextBox ID="txtPrecioCHasta" CssClass="form-control" runat="server"></asp:TextBox>
+        <asp:RangeValidator ID="rvPrecioCH"
+            ControlToValidate="txtPrecioCHasta"
+            runat="server" Type="Double"
+            CssClass="alert-danger" Display="Dynamic"
+            MaximumValue="50000"
+            MinimumValue="1"
+            ErrorMessage="Precio de Compra debe estar entre 1 y 50000"
+            Text="*" ValidationGroup="A">
+        </asp:RangeValidator>
+        <asp:RegularExpressionValidator ID="revPrecioCH"
+            runat="server" ControlToValidate="txtPrecioCHasta"
+            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
+            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+        </asp:RegularExpressionValidator>
+    </div>
+
+    <asp:Button ID="btnBuscar" Text="Buscar" runat="server" OnClick="btnBuscar_Click" class="btn btn-default" />
+    <div class="form-group" id="divGrilla" runat="server">
+    <asp:GridView ID="gvInforme" runat="server" AutoGenerateColumns="False" CssClass="table table-hover table-striped" 
+        GridLines="None" AllowPaging="True" PageSize="10" Width="438px" OnSelectedIndexChanged="gvInforme_SelectedIndexChanged"
+        OnPageIndexChanging="gvInforme_PageIndexChanging">
         <Columns>
             <asp:BoundField DataField="nombre" HeaderText="Nombre" />
             <asp:BoundField DataField="nombreTipo" HeaderText="Tipo" />
@@ -40,11 +75,12 @@
             <asp:BoundField DataField="stockMinimo" HeaderText="StockMinimo" />
             <asp:TemplateField HeaderText="¿Pedir?">
                 <ItemTemplate><%# (Boolean.Parse(Eval("listoParaPedir").ToString())) ? "Si" : "No" %></ItemTemplate>
-            </asp:TemplateField>            
+            </asp:TemplateField>
 
         </Columns>
 
     </asp:GridView>
+        </div>
 
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
