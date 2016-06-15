@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="ClienteEntidad.cs" />
     <Compile Include="GolosinaEntidad.cs" />
+    <Compile Include="GolosinaQuery.cs" />
     <Compile Include="GolosinasXCarritoEntidad.cs" />
     <Compile Include="ProveedoresEntidad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

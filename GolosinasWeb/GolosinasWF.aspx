@@ -62,6 +62,11 @@
             Display="Dynamic"></asp:RegularExpressionValidator>
     </div>
 
+    <input id="checkbox2" type="checkbox" value="1">
+<script>
+  $('#checkbox2').checkbox({label:'#label1'}).chbxChecked(null);
+</script>
+
     <div class="form-group" id="divResultado" runat="server" visible="false">
 
         <asp:TextBox TextMode="MultiLine" runat="server" ID="txtResultado" CssClass="form-control"></asp:TextBox>
@@ -69,11 +74,11 @@
     <div class="form-group">
         <label for="ddlTipoG">Tipo de golosina</label>
         <asp:DropDownList ID="ddlTipoG" CssClass="form-control" runat="server" AppendDataBoundItems="true">
-            <asp:ListItem Value="0">Seleccione..</asp:ListItem>
+            <asp:ListItem Value="null">Seleccione..</asp:ListItem>
         </asp:DropDownList>
         <asp:RequiredFieldValidator ID="rfvTipoG"
             runat="server" ControlToValidate="ddlTipoG"
-            ErrorMessage="Seleccione un Tipo de Golosina" InitialValue="0"
+            ErrorMessage="Seleccione un Tipo de Golosina" InitialValue="null"
             CssClass="alert-danger"
             Display="Dynamic"></asp:RequiredFieldValidator>
     </div>
@@ -96,6 +101,11 @@
             ErrorMessage="Precio de Compra debe estar entre 1 y 50000"
             Text="*" ValidationGroup="A">
         </asp:RangeValidator>
+        <asp:RegularExpressionValidator ID="revPrecioC"
+             runat="server" ControlToValidate="txtPrecioC"
+            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese un precio Valido"
+            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+        </asp:RegularExpressionValidator>
     </div>
 
     <div class="form-group">
@@ -117,6 +127,11 @@
             CssClass="alert-danger" Display="Dynamic"
             Text="*" ValidationGroup="A">
         </asp:RangeValidator>
+        <asp:RegularExpressionValidator ID="revPrecioV"
+             runat="server" ControlToValidate="txtPrecioV"
+            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese un precio Valido"
+            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+        </asp:RegularExpressionValidator>
     </div>
 
     <div class="form-group">
@@ -138,6 +153,11 @@
             CssClass="alert-danger" Display="Dynamic"
             Text="*" ValidationGroup="A">
         </asp:RangeValidator>
+        <asp:RegularExpressionValidator ID="revStockA"
+             runat="server" ControlToValidate="txtStockA"
+            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese un numero Valido"
+            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+        </asp:RegularExpressionValidator>
     </div>
     <div class="form-group">
         <label for="txtStockM">Stock Mínimo</label>
@@ -158,6 +178,7 @@
             CssClass="alert-danger" Display="Dynamic"
             Text="*" ValidationGroup="A">
         </asp:RangeValidator>
+
     </div>
 
     <div class="checkbox">

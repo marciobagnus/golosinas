@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ClienteDao.cs" />
     <Compile Include="GolosinaDao.cs" />
+    <Compile Include="GolosinaQueryDao.cs" />
     <Compile Include="ProveedoresDao.cs" />
     <Compile Include="ProovedorXProvinciaDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
