@@ -48,7 +48,7 @@
     <h1 class="text-center">Golosinas</h1>
     <div class="form-group">
         <label for="txtNombre">Nombre</label>
-        <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control" class="masterTooltip" title="Ingrese nombre de golosina"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txtNombre" CssClass="form-control" title="Ingrese nombre de golosina" MaxLength="50"></asp:TextBox>
         <asp:RequiredFieldValidator ID="rfvNombre"
             runat="server"
             ControlToValidate="txtNombre"
@@ -62,29 +62,25 @@
             Display="Dynamic"></asp:RegularExpressionValidator>
     </div>
 
-    <input id="checkbox2" type="checkbox" value="1">
-<script>
-  $('#checkbox2').checkbox({label:'#label1'}).chbxChecked(null);
-</script>
-
-    <div class="form-group" id="divResultado" runat="server" visible="false">
+       <div class="form-group" id="divResultado" runat="server" visible="false">
 
         <asp:TextBox TextMode="MultiLine" runat="server" ID="txtResultado" CssClass="form-control"></asp:TextBox>
     </div>
     <div class="form-group">
         <label for="ddlTipoG">Tipo de golosina</label>
         <asp:DropDownList ID="ddlTipoG" CssClass="form-control" runat="server" AppendDataBoundItems="true">
-            <asp:ListItem Value="null">Seleccione..</asp:ListItem>
+            <asp:ListItem Value="0">Seleccione..</asp:ListItem>
         </asp:DropDownList>
         <asp:RequiredFieldValidator ID="rfvTipoG"
             runat="server" ControlToValidate="ddlTipoG"
-            ErrorMessage="Seleccione un Tipo de Golosina" InitialValue="null"
+            ErrorMessage="Seleccione un Tipo de Golosina" InitialValue="0"
+            ValidationGroup="A"
             CssClass="alert-danger"
             Display="Dynamic"></asp:RequiredFieldValidator>
     </div>
     <div class="form-group">
         <label for="txtPrecioC">Precio de Compra</label>
-        <asp:TextBox runat="server" ID="txtPrecioC" CssClass="form-control" placeholder="Ingrese precio de compra"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txtPrecioC" CssClass="form-control" placeholder="Ingrese precio de compra" MaxLength="50"></asp:TextBox>
         <asp:RequiredFieldValidator ID="rfvPrecioC"
             ControlToValidate="txtPrecioC"
             runat="server"
@@ -104,13 +100,13 @@
         <asp:RegularExpressionValidator ID="revPrecioC"
              runat="server" ControlToValidate="txtPrecioC"
             CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
-            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+            ValidationExpression="[0-9]*\,?[0-9]*">
         </asp:RegularExpressionValidator>
     </div>
 
     <div class="form-group">
         <label for="txtPrecioV">Precio de Venta</label>
-        <asp:TextBox runat="server" ID="txtPrecioV" CssClass="form-control" placeholder="Ingrese precio de venta"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txtPrecioV" CssClass="form-control" placeholder="Ingrese precio de venta" MaxLength="50"></asp:TextBox>
         <asp:RequiredFieldValidator ID="rfvPrecioV"
             ControlToValidate="txtPrecioV"
             runat="server"
@@ -130,13 +126,15 @@
         <asp:RegularExpressionValidator ID="revPrecioV"
              runat="server" ControlToValidate="txtPrecioV"
             CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
-            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+            ValidationExpression="[0-9]*\,?[0-9]*">
         </asp:RegularExpressionValidator>
+        <asp:CompareValidator ID="cvPrecioV" runat="server" ErrorMessage="El precio de Venta debe ser mayor al de Compra" ControlToCompare="txtPrecioC" ControlToValidate="txtPrecioV" Operator="GreaterThan" Type="Double" ValidateRequestMode="Enabled" ValidationGroup="A"></asp:CompareValidator>
+
     </div>
 
     <div class="form-group">
         <label for="txtStockA">Stock Actual</label>
-        <asp:TextBox runat="server" ID="txtStockA" CssClass="form-control" placeholder="Ingrese stock actual"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txtStockA" CssClass="form-control" placeholder="Ingrese stock actual" MaxLength="50"></asp:TextBox>
         <asp:RequiredFieldValidator ID="rfvStockA"
             ControlToValidate="txtStockA"
             runat="server"
@@ -161,7 +159,7 @@
     </div>
     <div class="form-group">
         <label for="txtStockM">Stock Mínimo</label>
-        <asp:TextBox runat="server" ID="txtStockM" CssClass="form-control" placeholder="Ingrese stock minimo"></asp:TextBox>
+        <asp:TextBox runat="server" ID="txtStockM" CssClass="form-control" placeholder="Ingrese stock minimo" MaxLength="50"></asp:TextBox>
         <asp:RequiredFieldValidator ID="RequiredFieldValidator1"
             ControlToValidate="txtStockM"
             runat="server"
@@ -199,20 +197,29 @@
         ¿Desea eliminar la golosina?
     </div>
 
+    <div class="btn-group-lg text-center">
+                    <h3>
+                        <asp:Label ID="lblMensajeExito" class="label label-success" runat="server"></asp:Label></h3>
+                    <h3>
+                        <asp:Label ID="lblMensajeError" class="label label-danger" runat="server"></asp:Label></h3>
+                </div>
+
     <div class="form-group">
         <label for="txtGolosinaABuscar">Golosina a buscar:</label>
-        <asp:TextBox runat="server" ID="txtGolosinaABuscar" CssClass="form-control" placeholder=""></asp:TextBox>
-        <asp:Button ID="btnBuscar" runat="server" Text="Buscar" class="btn btn-default" OnClick="btnBuscar_Click" />
+        <asp:TextBox runat="server" ID="txtGolosinaABuscar" CssClass="form-control" placeholder="" MaxLength="50"></asp:TextBox>
+        <asp:Button ID="btnBuscar" runat="server" Text="Buscar" class="btn btn-default" OnClick="btnBuscar_Click" CausesValidation="False"/>
     </div>
     <div class="form-group" id="divGrilla" runat="server">
-        <asp:GridView ID="grdGolosinas" AutoGenerateColumns="False" runat="server" CssClass="table table-bordered bs-table" DataKeyNames="idGolosina" OnSelectedIndexChanged="grdGolosinas_SelectedIndexChanged">
+        <asp:GridView ID="grdGolosinas" AutoGenerateColumns="False" runat="server" CssClass="table table-bordered bs-table"
+             DataKeyNames="idGolosina" OnSelectedIndexChanged="grdGolosinas_SelectedIndexChanged"
+            GridLines="None" AllowPaging="True" PageSize="5" Width="438px" OnPageIndexChanging="grdGolosinas_PageIndexChanging">
             <Columns>
                 <asp:CommandField SelectText="Seleccionar" ShowSelectButton="True" />
                 <asp:BoundField DataField="nombre" HeaderText="Nombre Golosina" />
-                <asp:BoundField DataField="precioCompra" HeaderText="Precio Cpra" />
-                <asp:BoundField DataField="precioVenta" HeaderText="Precio Vta" />
+                <asp:BoundField DataField="precioCompra" HeaderText="Precio Cpra" DataFormatString="${0:0.00}" />
+                <asp:BoundField DataField="precioVenta" HeaderText="Precio Vta" DataFormatString="${0:0.00}" />
                 <asp:BoundField DataField="stockActual" HeaderText="Stock Actual" />
-                <asp:BoundField DataField="stockMinimo" HeaderText="StockMinimo" />                
+                <asp:BoundField DataField="stockMinimo" HeaderText="Stock Minimo" />                
 
                 <asp:TemplateField HeaderText="¿Pedir?" >
                     <ItemTemplate><%# (Boolean.Parse(Eval("listoParaPedir").ToString())) ? "Si" : "No" %></ItemTemplate>

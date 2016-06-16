@@ -68,12 +68,13 @@
                 </div>
                 <div class="col-md-6">
                     <div class="contact-form">
-                        <form method="post" action="contact-post.html">
+                        <form method="post" action="home.aspx">
                             <input type="text" class="textbox" value="Nombre" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Nombre';}">
                             <input type="text" class="textbox" value="Email" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Email';}">
                             <textarea value="Mensaje" onfocus="this.value= '';" onblur="if (this.value == '') {this.value = 'Mensaje';}">Mensaje</textarea>
                             <label class="btn2 btn-2 btn2-1b">
-                                <input type="submit" value="Enviar"></label>
+                                <input type="submit" value="Enviar" href="">
+                            </label>
                         </form>
                     </div>
                 </div>

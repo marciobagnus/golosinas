@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
         <label for="txtPrecioCDesde" id="lblPrecioCDesde">Precio Compra Desde</label>
-        <asp:TextBox ID="txtPrecioCDesde" CssClass="form-control" runat="server"></asp:TextBox>
+        <asp:TextBox ID="txtPrecioCDesde" CssClass="form-control" runat="server" MaxLength="50"></asp:TextBox>
         <asp:RangeValidator ID="rvPrecioC"
             ControlToValidate="txtPrecioCDesde"
             runat="server" Type="Double"
@@ -35,7 +35,7 @@
         <asp:RegularExpressionValidator ID="revPrecioCD"
             runat="server" ControlToValidate="txtPrecioCDesde"
             CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
-            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+            ValidationExpression="[0-9]*\,?[0-9]*">
         </asp:RegularExpressionValidator>
     </div>
 
@@ -54,7 +54,7 @@
         <asp:RegularExpressionValidator ID="revPrecioCH"
             runat="server" ControlToValidate="txtPrecioCHasta"
             CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
-            ValidationExpression="[0-9]{1,9}(\[0-9]{0,2})?$">
+            ValidationExpression="[0-9]*\,?[0-9]*">
         </asp:RegularExpressionValidator>
     </div>
 
@@ -69,8 +69,8 @@
             <asp:TemplateField HeaderText="Celiacos">
                 <ItemTemplate><%# (Boolean.Parse(Eval("esAptoCeliaco").ToString())) ? "Si" : "No" %></ItemTemplate>
             </asp:TemplateField>
-            <asp:BoundField DataField="precioCompra" HeaderText="Precio Cpra" />
-            <asp:BoundField DataField="precioVenta" HeaderText="Precio Vta" />
+            <asp:BoundField DataField="precioCompra" HeaderText="Precio Cpra" DataFormatString="${0:0.00}" />
+            <asp:BoundField DataField="precioVenta" HeaderText="Precio Vta" DataFormatString="${0:0.00}" />
             <asp:BoundField DataField="stockActual" HeaderText="Stock Actual" />
             <asp:BoundField DataField="stockMinimo" HeaderText="StockMinimo" />
             <asp:TemplateField HeaderText="¿Pedir?">

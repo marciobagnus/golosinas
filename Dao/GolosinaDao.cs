@@ -85,7 +85,7 @@ namespace Dao
                                 listoParaPedir, idTipoGolosina, esAptoCeliaco
                                 FROM Golosina where nombre Like @incr";
                     
-            cmd.Parameters.AddWithValue("@incr", "%" + incr + "%");
+            cmd.Parameters.AddWithValue("@incr", incr + "%");
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
             {

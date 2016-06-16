@@ -13,6 +13,8 @@ public partial class GolosinasWF : System.Web.UI.Page
     {
         if (!IsPostBack)
         {
+            lblMensajeError.Text = string.Empty;
+            lblMensajeExito.Text = string.Empty;
             divResultado.Visible = false;
             btnEliminar.Enabled = false;
             btnEliminar.CssClass = "btn btn-warning disabled";
@@ -40,63 +42,62 @@ public partial class GolosinasWF : System.Web.UI.Page
 
     protected void btnGuardar_Click(object sender, EventArgs e)
     {
+        lblMensajeError.Text = string.Empty;
+        lblMensajeExito.Text = string.Empty;
+        if (!Page.IsValid) return;
         try
-        {       
-        GolosinaEntidad golosina = new GolosinaEntidad();
-
-        golosina.nombre = txtNombre.Text;
-        int id;
-        if (int.TryParse(ddlTipoG.Text, out id))
-            golosina.idTipoGolosina = id;
-        golosina.precioCompra = float.Parse(txtPrecioC.Text);
-        golosina.precioVenta = float.Parse(txtPrecioV.Text);
-        golosina.stockActual = int.Parse(txtStockA.Text);
-        golosina.stockMinimo = int.Parse(txtStockM.Text);
-        
-        golosina.listoParaPedir = false;
-
-        if (chkCeliaco.Checked)
-            golosina.esAptoCeliaco = true;
-        else
-            golosina.esAptoCeliaco = false;
-
-        if (ID.HasValue)
         {
-            golosina.idGolosina = ID.Value;
-            GolosinaDao.Actualizar(golosina);
+            GolosinaEntidad golosina = new GolosinaEntidad();
+
+            golosina.nombre = txtNombre.Text;
+            int id;
+            if (int.TryParse(ddlTipoG.Text, out id))
+                golosina.idTipoGolosina = id;
+            golosina.precioCompra = float.Parse(txtPrecioC.Text);
+            golosina.precioVenta = float.Parse(txtPrecioV.Text);
+            golosina.stockActual = int.Parse(txtStockA.Text);
+            golosina.stockMinimo = int.Parse(txtStockM.Text);
+            if(int.Parse(txtStockA.Text) > int.Parse(txtStockM.Text))
+                golosina.listoParaPedir = true;
+            else
+                golosina.listoParaPedir = false;
+
+
+            if (chkCeliaco.Checked)
+                golosina.esAptoCeliaco = true;
+            else
+                golosina.esAptoCeliaco = false;
+
+            if (ID.HasValue)
+            {
+                golosina.idGolosina = ID.Value;
+                GolosinaDao.Actualizar(golosina);
+                lblMensajeExito.Text = "Golosina actualizada con éxito";
+            }
+            else
+            {
+                GolosinaDao.Insertar(golosina);
+                lblMensajeExito.Text = "Golosina grabada con éxito";
+            }
+
+
+
+            ID = golosina.idGolosina.Value;
+            btnEliminar.CssClass = "btn btn-warning";
+            btnEliminar.Enabled = true;
+            Limpiar();
+            CargarGrilla();
             
         }
-        else
+        catch (Exception ex)
         {
-
-            GolosinaDao.Insertar(golosina);
-        }
-
-        
-        CargarGrilla();
-        Limpiar();
-        }
-        catch(Exception ex)
-        {
-            divResultado.Visible = true;
-            txtResultado.Text = "Ha ocurrido el siguiente error: " + ex.Message;
+            lblMensajeError.Text = ex.Message;
+            /*divResultado.Visible = true;
+            txtResultado.Text = "Ha ocurrido el siguiente error: " + ex.Message;*/
         }
     }
 
-    protected void Limpiar()
-    {
-        txtNombre.Text = string.Empty;
-        txtPrecioC.Text = string.Empty;
-        txtPrecioV.Text = string.Empty;
-        txtStockA.Text = string.Empty;
-        txtStockM.Text = string.Empty;
-        chkCeliaco.Checked = false;
-        ddlTipoG.SelectedIndex = 0;
-
-        divResultado.Visible = false;
-        btnEliminar.Enabled = false;
-        btnEliminar.CssClass = "btn btn-warning";
-    }
+    
 
     protected int? ID
     {
@@ -115,10 +116,14 @@ public partial class GolosinasWF : System.Web.UI.Page
     protected void btnNuevo_Click(object sender, EventArgs e)
     {
         Limpiar();
+        lblMensajeError.Text = string.Empty;
+        lblMensajeExito.Text = string.Empty;
     }
 
     protected void grdGolosinas_SelectedIndexChanged(object sender, EventArgs e)
     {
+        lblMensajeError.Text = string.Empty;
+        lblMensajeExito.Text = string.Empty;
         Limpiar();
         int idSeleccionado = int.Parse(grdGolosinas.SelectedDataKey.Value.ToString());
         ID = idSeleccionado;
@@ -131,23 +136,72 @@ public partial class GolosinasWF : System.Web.UI.Page
         txtStockA.Text = goloSelec.stockActual.ToString();
         txtStockM.Text = goloSelec.stockMinimo.ToString();
         chkCeliaco.Checked = goloSelec.esAptoCeliaco;
-             
+
         btnEliminar.Enabled = true;
 
     }
 
     protected void btnEliminar_Click(object sender, EventArgs e)
     {
-        GolosinaDao.Eliminar(ID.Value);
-        CargarGrilla();
-        Limpiar();
+        lblMensajeError.Text = string.Empty;
+        lblMensajeExito.Text = string.Empty;
+        try
+        {
+            if (ID.HasValue)
+            {
+                GolosinaDao.Eliminar(ID.Value);
+                CargarGrilla();
+                Limpiar();
+                lblMensajeExito.Text = "Golosina eliminada con éxito";
+            }
+
+            else
+            {
+                lblMensajeError.Text = "Debe seleccionar una golosina para poder eliminarla";
+            }
+        }
+        catch (ApplicationException ex)
+        {
+            lblMensajeError.Text = ex.Message;
+        }
     }
 
     protected void btnBuscar_Click(object sender, EventArgs e)
     {
+      
+        lblMensajeError.Text = string.Empty;
+        lblMensajeExito.Text = string.Empty;
         //Establezco la fuente de los datos de la grilla
-        grdGolosinas.DataSource = GolosinaDao.ObtenerPorIncremento(txtGolosinaABuscar.Text);  
+        grdGolosinas.DataSource = GolosinaDao.ObtenerPorIncremento(txtGolosinaABuscar.Text);
+       
         //Indico que llene la grilla
         grdGolosinas.DataBind();
+    }
+
+    protected void grdGolosinas_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        lblMensajeError.Text = string.Empty;
+        lblMensajeExito.Text = string.Empty;
+        grdGolosinas.PageIndex = e.NewPageIndex;
+        CargarGrilla();
+
+    }
+
+    protected void Limpiar()
+    {
+        txtNombre.Text = string.Empty;
+        txtPrecioC.Text = string.Empty;
+        txtPrecioV.Text = string.Empty;
+        txtStockA.Text = string.Empty;
+        txtStockM.Text = string.Empty;
+        chkCeliaco.Checked = false;
+        ddlTipoG.SelectedIndex = 0;
+
+        txtGolosinaABuscar.Text = string.Empty;
+
+     
+        divResultado.Visible = false;
+        btnEliminar.Enabled = false;
+        btnEliminar.CssClass = "btn btn-warning";
     }
 }

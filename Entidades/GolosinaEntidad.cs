@@ -10,7 +10,7 @@ namespace Entidades
     {
         public GolosinaEntidad() { }
 
-        public int idGolosina { get; set; }
+        public int? idGolosina { get; set; }
         public string nombre { get; set; }
         public float precioCompra { get; set; }
         public float precioVenta { get; set; }
