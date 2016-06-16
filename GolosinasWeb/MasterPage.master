@@ -67,7 +67,15 @@
                         </ul>
                     </li>
 
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown">Clientes
+                    <span class="caret"></span>
+                            <span class="sr-only">Desplegar menú</span> </a>
+
+                        <ul class="dropdown-menu" role="menu">
                     <li><a href="~/ClientesWF.aspx" runat="server">Clientes</a></li>
+                    <li><a href="~/ReporteVentasWF.aspx" runat="server">Informe de Ventas</a></li>
+
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">

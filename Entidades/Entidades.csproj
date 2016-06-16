@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClienteEntidad.cs" />
+    <Compile Include="EmpleadoEntidad.cs" />
+    <Compile Include="FacturaXClienteXEmpleadoEntidad.cs" />
     <Compile Include="GolosinaEntidad.cs" />
     <Compile Include="GolosinaQuery.cs" />
     <Compile Include="GolosinasXCarritoEntidad.cs" />
