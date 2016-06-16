@@ -15,7 +15,7 @@ public partial class GolosinasWF : System.Web.UI.Page
         {
             lblMensajeError.Text = string.Empty;
             lblMensajeExito.Text = string.Empty;
-            divResultado.Visible = false;
+            //divResultado.Visible = false;
             btnEliminar.Enabled = false;
             btnEliminar.CssClass = "btn btn-warning disabled";
             CargarGrilla();
@@ -200,7 +200,7 @@ public partial class GolosinasWF : System.Web.UI.Page
         txtGolosinaABuscar.Text = string.Empty;
 
      
-        divResultado.Visible = false;
+        //divResultado.Visible = false;
         btnEliminar.Enabled = false;
         btnEliminar.CssClass = "btn btn-warning";
     }
