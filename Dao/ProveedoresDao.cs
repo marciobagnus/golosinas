@@ -107,7 +107,7 @@ namespace Dao
             {
                 ProveedoresEntidad prov = cargarProveedor(dr);
                 return prov;
-                con.Close();
+                
             }
             else
             {
@@ -172,6 +172,30 @@ namespace Dao
 
             cmd.ExecuteNonQuery();
             con.Close();
+        }
+
+        public static List<ProveedoresEntidad> ObtenerPorIncremento(string incr)
+        {
+            List<ProveedoresEntidad> listProveedores = new List<ProveedoresEntidad>();
+            SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
+            cn.Open();
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = @"SELECT * FROM [dbo].[Proveedor] WHERE razonSocial LIKE @incr";
+
+            cmd.Parameters.AddWithValue("@incr", incr + "%");
+            SqlDataReader dr = cmd.ExecuteReader();
+            while (dr.Read())
+            {
+    
+                listProveedores.Add(cargarProveedor(dr));
+
+            }
+            dr.Close();
+            cn.Close();
+            return listProveedores;
+
         }
 
     }

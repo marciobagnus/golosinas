@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entidades
 {
-    public class GolosinaQuery: GolosinaEntidad
+    public class GolosinaQuery: GolosinasEntidad
     {
         public string nombreTipo { get; set; }        
     }

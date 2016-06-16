@@ -47,7 +47,7 @@ public partial class GolosinasWF : System.Web.UI.Page
         if (!Page.IsValid) return;
         try
         {
-            GolosinaEntidad golosina = new GolosinaEntidad();
+            GolosinasEntidad golosina = new GolosinasEntidad();
 
             golosina.nombre = txtNombre.Text;
             int id;
@@ -127,7 +127,7 @@ public partial class GolosinasWF : System.Web.UI.Page
         Limpiar();
         int idSeleccionado = int.Parse(grdGolosinas.SelectedDataKey.Value.ToString());
         ID = idSeleccionado;
-        GolosinaEntidad goloSelec = GolosinaDao.ObtenerPorID(idSeleccionado);
+        GolosinasEntidad goloSelec = GolosinaDao.ObtenerPorID(idSeleccionado);
 
         txtNombre.Text = goloSelec.nombre;
         ddlTipoG.SelectedIndex = goloSelec.idTipoGolosina;

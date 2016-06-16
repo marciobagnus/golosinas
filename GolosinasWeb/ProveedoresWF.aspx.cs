@@ -38,19 +38,19 @@ public partial class GolosinasWF : System.Web.UI.Page
     {
         List<ProvinciaEntidad> listaProv = ProvinciaDao.ObtenerProvincias();
         //Vaciar comboBox
-        cmb_provincia.DataSource = null;
+        ddl_provincia.DataSource = null;
 
         //Indicar qué propiedad se verá en la lista
-        cmb_provincia.DataTextField = "nombre";
+        ddl_provincia.DataTextField = "nombre";
 
         //Indicar qué valor tendrá cada ítem
-        cmb_provincia.DataValueField = "idProvincia";
+        ddl_provincia.DataValueField = "idProvincia";
 
         //Asignar la propiedad DataSource
-        cmb_provincia.DataSource = listaProv;
+        ddl_provincia.DataSource = listaProv;
 
-        cmb_provincia.SelectedIndex=1;
-        cmb_provincia.DataBind();
+        ddl_provincia.SelectedIndex=1;
+        ddl_provincia.DataBind();
 
 
     }
@@ -71,7 +71,7 @@ public partial class GolosinasWF : System.Web.UI.Page
             proveedor.esNacional = false;
 
         int provincia;
-        if (int.TryParse(cmb_provincia.Text, out provincia))
+        if (int.TryParse(ddl_provincia.Text, out provincia))
             proveedor.idProvincia = provincia;
         DateTime fechaAlta;
         if (DateTime.TryParse(txt_fechaAlta.Text, out fechaAlta))
@@ -106,7 +106,7 @@ public partial class GolosinasWF : System.Web.UI.Page
         txt_fechaAlta.Text = string.Empty;
         txt_nombre.Text = string.Empty;
         txt_razonSocial.Text = string.Empty;
-        cmb_provincia.SelectedIndex = 0;
+        ddl_provincia.SelectedIndex = 0;
         chk_esNacional.Checked = false;
         ID = null;
         btnEliminar.Enabled = false;
@@ -124,7 +124,7 @@ public partial class GolosinasWF : System.Web.UI.Page
         txt_fechaAlta.Text = provSelec.fechaAlta.ToString();
         txt_domicilio.Text = provSelec.domicilio;
         chk_esNacional.Checked = provSelec.esNacional;
-        cmb_provincia.SelectedIndex = provSelec.idProvincia - 1;
+        ddl_provincia.SelectedIndex = provSelec.idProvincia - 1;
         btnEliminar.Enabled = true;
     }
 
@@ -146,5 +146,14 @@ public partial class GolosinasWF : System.Web.UI.Page
     {
         Limpiar();
     }
-    
+
+
+    protected void btn_Buscar_Click(object sender, EventArgs e)
+    {
+           //Establezco la fuente de los datos de la grilla
+        grid_proveedores.DataSource = GolosinaDao.ObtenerPorIncremento(txt_ProveedorBuscar.Text);
+
+        //Indico que llene la grilla
+        grid_proveedores.DataBind();
+    }
 }

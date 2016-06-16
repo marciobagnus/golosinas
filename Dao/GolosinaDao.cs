@@ -11,7 +11,7 @@ namespace Dao
 {
     public class GolosinaDao
     {
-        public static void Insertar(GolosinaEntidad golosina)
+        public static void Insertar(GolosinasEntidad golosina)
         {
 
 
@@ -71,9 +71,9 @@ namespace Dao
                 return true;
         }
 
-        public static List<GolosinaEntidad> ObtenerPorIncremento(string incr)
+        public static List<GolosinasEntidad> ObtenerPorIncremento(string incr)
         {
-            List<GolosinaEntidad> listGolosinas = new List<GolosinaEntidad>();
+            List<GolosinasEntidad> listGolosinas = new List<GolosinasEntidad>();
             SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
             cn.Open();
 
@@ -89,7 +89,7 @@ namespace Dao
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
             {
-                GolosinaEntidad g = new GolosinaEntidad();
+                GolosinasEntidad g = new GolosinasEntidad();
                g.idGolosina = int.Parse(dr["idGolosina"].ToString());
                 g.nombre = dr["nombre"].ToString();
                 g.precioCompra = float.Parse(dr["precioCompra"].ToString());
@@ -110,7 +110,7 @@ namespace Dao
         }
 
 
-        public static void Actualizar(GolosinaEntidad golosina)
+        public static void Actualizar(GolosinasEntidad golosina)
         {
             SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
             cn.Open();
@@ -156,9 +156,9 @@ namespace Dao
             cn.Close();
         }
 
-        public static List<GolosinaEntidad> ObtenerTodos()
+        public static List<GolosinasEntidad> ObtenerTodos()
         {
-            List<GolosinaEntidad> listaGolosinas = new List<GolosinaEntidad>();
+            List<GolosinasEntidad> listaGolosinas = new List<GolosinasEntidad>();
             SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
             cn.Open();
 
@@ -173,7 +173,7 @@ namespace Dao
 
             while (dr.Read())
             {
-                GolosinaEntidad g = new GolosinaEntidad();
+                GolosinasEntidad g = new GolosinasEntidad();
 
                 g.idGolosina = int.Parse(dr["idGolosina"].ToString());
                 g.nombre = dr["nombre"].ToString();
@@ -193,9 +193,9 @@ namespace Dao
             return listaGolosinas;
         }
 
-        public static GolosinaEntidad ObtenerPorID(int id)
+        public static GolosinasEntidad ObtenerPorID(int id)
         {
-            GolosinaEntidad g = null;
+            GolosinasEntidad g = null;
 
             SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
             cn.Open();
@@ -212,7 +212,7 @@ namespace Dao
 
             if (dr.Read())
             {
-                g = new GolosinaEntidad();
+                g = new GolosinasEntidad();
                 g.idGolosina = int.Parse(dr["idGolosina"].ToString());
                 g.nombre = dr["nombre"].ToString();
                 g.precioCompra = float.Parse(dr["precioCompra"].ToString());
