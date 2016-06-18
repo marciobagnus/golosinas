@@ -14,70 +14,61 @@ public partial class carritoPedidos : System.Web.UI.Page
     {
 
         // Check
-        if (!IsPostBack)
+        if (!Page.IsPostBack)
         {
-            {
-                Session.Clear();
-
-                string[] golosina = { "Caramelo Arcor", "Chocolate 20g", "Chocolate 100g", "Chupetin", "Chicle" };
-                string[] precioUnitario = { "2", "10", "25", "5", "1" };
-                string[] subtotal = { "0", "0", "0", "0", "0" };
-                string[] idGolosina = { "0", "1", "2", "3", "4" };
-                DataTable dt = new DataTable();
-                dt.Columns.Add("idGolosina");
-                dt.Columns.Add("nombre");
-                dt.Columns.Add("precioUnitario");
-                dt.Columns.Add("subtotal");
-
-
-                for (int i = 0; i < golosina.Length; i++)
-                {
-                    DataRow workRow = dt.NewRow();
-                    workRow[0] = idGolosina[i];
-                    workRow[1] = golosina[i];
-                    workRow[2] = precioUnitario[i];
-                    workRow[3] = subtotal[i];
-                    dt.Rows.Add(workRow);
-                }
-
-
-
-                grillaGolosinas.DataSource = dt;
-                grillaGolosinas.DataBind();
-
-                // Dispose
-                dt.Dispose();
-
-            }
-
+            Session.Clear();
+            cargarGrillaGolosinas();
             DateTime hoy = DateTime.Today;
             lbl_fechaPedido.Text = hoy.ToString("dd/MM/yyyy");
             lbl_fechaEntrega.Text = hoy.AddDays(5).ToString("dd/MM/yyyy");
             cargarProveedores();
-
-            // Variable
-            //grillaGolosinas.DataSource = ProvinciaDao.ObtenerProvincias();
-            //grillaGolosinas.DataBind();
-
         }
+    }
+
+    private void cargarGrillaGolosinas()
+    {
+        //Obtengo la lista de todas las golosinas
+        List<GolosinasEntidad> listaGolosinasCompleta = new List<GolosinasEntidad>();
+        listaGolosinasCompleta = GolosinaDao.ObtenerTodos();
+
+        //Creo la nueva lista de golosinas con datos para el carrito (objeto GolosinasXCarritoEntidad)
+
+        List<DetallePedidoEntidad> listaGolosinasCarrito = new List<DetallePedidoEntidad>();
+
+
+        //le cargo los datos a la nueva lista
+
+        for (int i = 0; i < listaGolosinasCompleta.Capacity - 1; i++)
+        {
+            DetallePedidoEntidad goCarrito = new DetallePedidoEntidad();
+
+            goCarrito.idGolosina = listaGolosinasCompleta[i].idGolosina;
+            goCarrito.cantidad = 0;
+            goCarrito.nombreGolosina = listaGolosinasCompleta[i].nombre;
+            goCarrito.subtotal = 0;
+            goCarrito.precioGolosina = double.Parse(listaGolosinasCompleta[i].precioCompra.ToString("#.###"));
+            listaGolosinasCarrito.Add(goCarrito);
+        }
+
+        grillaGolosinas.DataSource = listaGolosinasCarrito;
+        grillaGolosinas.DataBind();
     }
     private void cargarProveedores()
     {
         List<ProveedoresEntidad> listaProv = ProveedoresDao.ObtenerTodos();
         //Vaciar comboBox
-        cmb_proveedores.DataSource = null;
+        ddl_proveedores.DataSource = null;
 
         //Indicar qué propiedad se verá en la lista
-        cmb_proveedores.DataTextField = "razonSocial";
+        ddl_proveedores.DataTextField = "razonSocial";
 
         //Indicar qué valor tendrá cada ítem
-        cmb_proveedores.DataValueField = "idProveedor";
+        ddl_proveedores.DataValueField = "idProveedor";
 
         //Asignar la propiedad DataSource
-        cmb_proveedores.DataSource = listaProv;
+        ddl_proveedores.DataSource = listaProv;
 
-        cmb_proveedores.SelectedIndex = 1;
-        cmb_proveedores.DataBind();
+        ddl_proveedores.DataBind();
 
 
     }
@@ -141,18 +132,17 @@ public partial class carritoPedidos : System.Web.UI.Page
     }
 
 
-    protected List<GolosinasXCarritoEntidad> ListaCarrito
+    protected List<DetallePedidoEntidad> ListaCarrito
     {
-
         get
         {
-            if (Session["ListaGolisinas"] == null)
-                Session["ListaGolisinas"] = new List<GolosinasXCarritoEntidad>();
-            return (List<GolosinasXCarritoEntidad>)Session["ListaGolisinas"];
+            if (Session["ListaDetallesPedido"] == null)
+                Session["ListaDetallesPedido"] = new List<DetallePedidoEntidad>();
+            return (List<DetallePedidoEntidad>)Session["ListaDetallesPedido"];
         }
         set
         {
-            Session["ListaTExAlumno"] = value;
+            Session["ListaDetallesPedido"] = value;
         }
     }
 
@@ -185,11 +175,11 @@ public partial class carritoPedidos : System.Web.UI.Page
         }
         else
         {
-            ListaCarrito.Add(new GolosinasXCarritoEntidad
+            ListaCarrito.Add(new DetallePedidoEntidad
             {
                 idGolosina = int.Parse(lbl_idGolosina.Text),
-                nombre = lbl_nombre.Text,
-                precioUnitario = double.Parse(lbl_precioUnitario.Text),
+                nombreGolosina = lbl_nombre.Text,
+                precioGolosina = double.Parse(lbl_precioUnitario.Text),
                 subtotal = double.Parse(lbl_subtotal.Text),
                 cantidad = int.Parse(lbl_cantidad.Text)
             }
@@ -197,16 +187,17 @@ public partial class carritoPedidos : System.Web.UI.Page
 
         }
 
-        grillaCarrito.DataSource = ListaCarrito;
-        grillaCarrito.DataBind();
+        cargarGrillaCarrito();
 
         sumarCarrito();
         lbl_cantidad.Text = "0";
         lbl_subtotal.Text = "0";
-
-
-
-
+    }
+    
+    private void cargarGrillaCarrito()
+    {
+        grillaCarrito.DataSource = ListaCarrito;
+        grillaCarrito.DataBind();
     }
 
 
@@ -226,24 +217,61 @@ public partial class carritoPedidos : System.Web.UI.Page
         Button btn = sender as Button;
         GridViewRow row = btn.NamingContainer as GridViewRow;
 
-        Label lbl_idGolosina = row.FindControl("lbl_idGolosinaCarrito") as Label;
-       
-        for (int i = 0; i < ListaCarrito.Count; i++)
+        Label lbl_nombreGolosina = row.FindControl("nombreGolosina") as Label;
+
+
+       for(int i=0; i < grillaCarrito.Rows.Count; i++)
         {
-            if (int.Parse(lbl_idGolosina.Text) == ListaCarrito[i].idGolosina)
+            if (grillaCarrito.Rows[i].Cells[0].Text == ListaCarrito[i].nombreGolosina)
             {
                 ListaCarrito.RemoveAt(i);
                 break;
             }
         }
-
         sumarCarrito();
-        grillaCarrito.DataSource = ListaCarrito;
-        grillaCarrito.DataBind();
+        cargarGrillaCarrito();
     }
+
 
     protected void btn_generarPedido_Click(object sender, EventArgs e)
     {
+        PedidoEntidad pedido = new PedidoEntidad();
+        pedido.idProveedor = int.Parse(ddl_proveedores.SelectedValue);
 
+        pedido.fechaPedido = DateTime.Parse(lbl_fechaPedido.Text);
+        pedido.fechaEntrega = DateTime.Parse(lbl_fechaEntrega.Text);
+
+        pedido.total = double.Parse(lbl_precioTotal.Text);
+
+        List<DetallePedidoEntidad> listaDetalles = new List<DetallePedidoEntidad>();
+
+        for (int i = 0; i < ListaCarrito.Count; i++)
+        {
+            DetallePedidoEntidad detalle = new DetallePedidoEntidad();
+
+            detalle.idGolosina = ListaCarrito[i].idGolosina;
+            detalle.nombreGolosina = ListaCarrito[i].nombreGolosina;
+            detalle.cantidad = ListaCarrito[i].cantidad;
+            detalle.subtotal = ListaCarrito[i].subtotal;
+
+            listaDetalles.Add(detalle);
+        }
+
+        PedidosDao.insertarPedido(pedido, listaDetalles);
+        limpiar();
+    }
+
+    private void limpiar()
+    {
+        Session.Clear();
+        cargarGrillaCarrito();
+        lbl_precioTotal.Text = string.Empty;
+    }
+
+
+    protected void grillaCarrito_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        grillaGolosinas.PageIndex = e.NewPageIndex;
+        cargarGrillaGolosinas();
     }
 }

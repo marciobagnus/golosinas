@@ -41,11 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClienteEntidad.cs" />
+    <Compile Include="DetallePedidoEntidad.cs" />
     <Compile Include="EmpleadoEntidad.cs" />
     <Compile Include="FacturaXClienteXEmpleadoEntidad.cs" />
     <Compile Include="GolosinaEntidad.cs" />
     <Compile Include="GolosinaQuery.cs" />
-    <Compile Include="GolosinasXCarritoEntidad.cs" />
+    <Compile Include="PedidoEntidad.cs" />
     <Compile Include="ProveedoresEntidad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinciaEntidad.cs" />

@@ -22,14 +22,7 @@ public partial class GolosinasWF : System.Web.UI.Page
 
     protected void CargarGrilla()
     {
-        grid_proveedores.DataSource = null;
-        //Establezco la fuente de los datos de la grilla
-        grid_proveedores.DataSource = (from prov in ProveedoresDao.ObtenerTodos()
-                                       orderby prov.razonSocial
-                                       select prov);
-        //Establezco un atributo identificador de cada una de las filas de la grilla, en nuestro caso la clave primaria
-        grid_proveedores.DataKeyNames = new string[] { "idProveedor" };
-        //Indico que llene la grilla
+        grid_proveedores.DataSource = ProveedoresDao.ObtenerTodos();
         grid_proveedores.DataBind();
     }
 
@@ -48,8 +41,7 @@ public partial class GolosinasWF : System.Web.UI.Page
 
         //Asignar la propiedad DataSource
         ddl_provincia.DataSource = listaProv;
-
-        ddl_provincia.SelectedIndex=1;
+        
         ddl_provincia.DataBind();
 
 
@@ -106,7 +98,6 @@ public partial class GolosinasWF : System.Web.UI.Page
         txt_fechaAlta.Text = string.Empty;
         txt_nombre.Text = string.Empty;
         txt_razonSocial.Text = string.Empty;
-        ddl_provincia.SelectedIndex = 0;
         chk_esNacional.Checked = false;
         ID = null;
         btnEliminar.Enabled = false;
@@ -124,7 +115,6 @@ public partial class GolosinasWF : System.Web.UI.Page
         txt_fechaAlta.Text = provSelec.fechaAlta.ToString();
         txt_domicilio.Text = provSelec.domicilio;
         chk_esNacional.Checked = provSelec.esNacional;
-        ddl_provincia.SelectedIndex = provSelec.idProvincia - 1;
         btnEliminar.Enabled = true;
     }
 
@@ -155,5 +145,11 @@ public partial class GolosinasWF : System.Web.UI.Page
 
         //Indico que llene la grilla
         grid_proveedores.DataBind();
+    }
+
+    protected void grid_proveedores_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
+        grid_proveedores.PageIndex = e.NewPageIndex;
+        CargarGrilla();
     }
 }

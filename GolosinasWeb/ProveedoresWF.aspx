@@ -12,8 +12,10 @@
     <br />
     <br />
 
-    <div class="panel panel-primary">
+
+    <div class="panel panel-primary col-lg-11">
         <div>
+            <br />
             <label>Nombre:</label>
             <asp:TextBox ID="txt_nombre" placeholder="Ingrese nombre del proovedor" CssClass="form-control" runat="server"></asp:TextBox>
             <asp:RequiredFieldValidator
@@ -56,7 +58,7 @@
                 runat="server"
                 CssClass="alert-danger">
             </asp:RequiredFieldValidator>
-  <%--          <asp:RangeValidator ID="rv_cuit"
+            <%--          <asp:RangeValidator ID="rv_cuit"
                 ControlToValidate="txt_cuit"
                 runat="server" Type="Integer"
                 ErrorMessage="CUIT ingresado incorrecto"
@@ -81,8 +83,8 @@
             <asp:RangeValidator ID="rv_fechaAlta"
                 ControlToValidate="txt_fechaAlta"
                 runat="server" Type="Date"
-                MaximumValue="01/01/1900"
-                MinimumValue="01/01/2900"
+                MinimumValue="01/01/1900"
+                MaximumValue="01/01/2900"
                 ErrorMessage="La fecha de alta esta fuera de rango (01/01/1900-01/01/2900)"
                 CssClass="alert-danger" Display="Dynamic"
                 Text="*" ValidationGroup="A">
@@ -106,7 +108,9 @@
         </div>
         <div>
             <label>Provincia:</label>
-            <asp:DropDownList ID="ddl_provincia" placeholder="Ingrese la provincia del proovedor" CssClass="form-control" runat="server"></asp:DropDownList>
+            <asp:DropDownList ID="ddl_provincia" AppendDataBoundItems="true" CssClass="form-control" runat="server">
+                <asp:ListItem Value="0">Seleccione..</asp:ListItem>
+            </asp:DropDownList>
             <br />
             <asp:RequiredFieldValidator
                 ID="rv_Provincia"
@@ -125,6 +129,8 @@
         <asp:Button ID="btn_guardar" runat="server" CssClass="btn btn-primary" Text="Guardar" OnClick="btn_guardar_Click" ValidationGroup="A" />
         <asp:Button ID="btnNuevo" runat="server" Text="Limpiar" class="btn btn-default" OnClick="btnNuevo_Click" />
         <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" class="btn btn-warning " OnClick="btnEliminar_Click" />
+        <br />
+        <br />
     </div>
     <br />
     <br />
@@ -141,7 +147,9 @@
             <h4>Listado de Proveedores</h4>
         </div>
         <div class="panel-body" id="divGrilla" runat="server">
-            <asp:GridView ID="grid_proveedores" CssClass="table table-hover table-striped" AutoGenerateColumns="false" OnSelectedIndexChanged="grid_proveedores_SelectedIndexChanged" runat="server">
+            <asp:GridView ID="grid_proveedores" CssClass="table table-hover table-striped" AutoGenerateColumns="false" runat="server"
+                OnSelectedIndexChanged="grid_proveedores_SelectedIndexChanged" DataKeyNames="idProveedor"
+                GridLines="None" AllowPaging="True" PageSize="5" Width="438px" OnPageIndexChanging="grid_proveedores_PageIndexChanging">
                 <Columns>
                     <asp:CommandField SelectText="Seleccionar" ItemStyle-CssClass="col-lg-3 text-center" ShowSelectButton="True" />
                     <asp:BoundField DataField="razonSocial" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Razon Social" />

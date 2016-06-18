@@ -47,6 +47,7 @@
     <Compile Include="EmpleadoDao.cs" />
     <Compile Include="GolosinaDao.cs" />
     <Compile Include="GolosinaQueryDao.cs" />
+    <Compile Include="PedidosDao.cs" />
     <Compile Include="ProveedoresDao.cs" />
     <Compile Include="ProovedorXProvinciaDao.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

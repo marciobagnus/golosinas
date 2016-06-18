@@ -23,7 +23,9 @@
 
         <br />
         <label>Listado de Proveedores: </label>
-        <asp:DropDownList ID="cmb_proveedores" runat="server"></asp:DropDownList>
+        <asp:DropDownList ID="ddl_proveedores" runat="server">
+            <asp:ListItem Value="0">Seleccione..</asp:ListItem>
+        </asp:DropDownList>
         <br />
         <br />
         <label>Fecha de Pedido: </label>
@@ -49,7 +51,7 @@
                     <asp:TemplateField HeaderText="Producto">
                         <ItemTemplate>
                             <asp:Label ID="lbl_idGolosina" Visible="false" Text='<%# Eval("idGolosina") %>' runat="server"></asp:Label>
-                            <asp:Label ID="lbl_producto" runat="server" Text='<%# Eval("nombre") %>'></asp:Label>
+                            <asp:Label ID="lbl_producto" runat="server" Text='<%# Eval("nombreGolosina") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Cantidad">
@@ -63,7 +65,7 @@
                     <asp:TemplateField HeaderStyle-Width="50" HeaderText="Precio Unitario">
                         <ItemTemplate>
                             <asp:Label ID="lbl_signo" Text="$" runat="server"></asp:Label>
-                            <asp:Label ID="lbl_precioUnitario" runat="server" Text='<%# Eval("precioUnitario") %>'></asp:Label>
+                            <asp:Label ID="lbl_precioUnitario" runat="server" Text='<%# Eval("precioGolosina") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
 
@@ -93,38 +95,23 @@
             </div>
 
 
-            <asp:GridView ID="grillaCarrito" runat="server" CssClass="table table-bordered bs-table right" AutoGenerateColumns="false" HeaderStyle-BackColor="#009900">
+            <asp:GridView ID="grillaCarrito" runat="server" CssClass="table table-bordered bs-table right" AutoGenerateColumns="False" HeaderStyle-BackColor="#009900"
+                DataKeyNames="idGolosina" GridLines="None" AllowPaging="True" PageSize="5" Width="438px"
+                OnPageIndexChanging="grillaCarrito_PageIndexChanging">
                 <Columns>
-                    <asp:TemplateField HeaderText="Producto">
-                        <ItemTemplate>
-                            <asp:Label ID="lbl_idGolosinaCarrito" Visible="false" Text='<%# Eval("idGolosina") %>' runat="server"></asp:Label>
-                            <asp:Label ID="lbl_golosinaCarrito" runat="server" Text='<%# Eval("nombre") %>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
+                    <asp:BoundField HeaderText="Producto" DataField="nombreGolosina" />
+                    <asp:BoundField HeaderText="Cantidad" DataField="cantidad" />
+                    <asp:BoundField HeaderText="Subtotal" DataField="subtotal" />
 
-                    <asp:TemplateField HeaderText="Cantidad">
-                        <ItemTemplate>
-                            <asp:Label ID="lbl_CantidadCarrito" Text='<%# Eval("cantidad") %>' runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-
-                    <asp:TemplateField HeaderText="Subtotal">
-                        <ItemTemplate>
-                            <asp:Label ID="lbl_signo2Carrito" Text="$" runat="server"></asp:Label>
-                            <asp:Label ID="lbl_subtotalCarrito" Text='<%# Eval("subtotal") %>' runat="server"></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
                     <asp:TemplateField>
                         <ItemTemplate>
-
                             <asp:Button ID="btnQuitar" Text="Quitar" runat="server" OnClick="btnQuitar_Click" />
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
+
+                <HeaderStyle BackColor="#009900"></HeaderStyle>
             </asp:GridView>
-
-
-
 
             <br />
         </div>
