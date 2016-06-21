@@ -73,8 +73,12 @@
                             <span class="sr-only">Desplegar menú</span> </a>
 
                         <ul class="dropdown-menu" role="menu">
-                    <li><a href="~/ClientesWF.aspx" runat="server">Clientes</a></li>
-                    <li><a href="~/ReporteVentasWF.aspx" runat="server">Informe de Ventas</a></li>
+                            <li><a href="~/ClientesWF.aspx" runat="server">Clientes ABM</a></li>
+                            <li><a href="~/ReporteVentasWF.aspx" runat="server">Informe de Ventas</a></li>
+
+                        </ul>
+                    </li>
+
 
                 </ul>
 
