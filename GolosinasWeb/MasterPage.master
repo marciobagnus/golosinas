@@ -8,17 +8,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
 
     <link href="../web/css/style.css" rel='stylesheet' type='text/css' />
     <!-- 
     <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:100,200,300,400,500,600,700,800,900' rel='stylesheet' type='text/css'>
          -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<%--    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" href="/resources/demos/style.css">
+    --%>
 
+     <script src="web/js/jquery-1.11.1.min.js"></script>--%>
+    <link href="css/jquery-bootstrap-datepicker.css" rel="stylesheet" />
+
+  
 
     <asp:ContentPlaceHolder ID="head" runat="server">
     </asp:ContentPlaceHolder>
@@ -51,6 +56,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="GolosinasWF.aspx" runat="server">Golosinas ABM</a></li>
                             <li><a href="GolosinaQueryWF.aspx" runat="server">Informe de Stock</a></li>
+                            <li><a href="~/TransaccionPromocion.aspx" runat="server">Registrar Promocion</a></li>
 
                         </ul>
                     </li>
@@ -120,8 +126,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
     <!-- Latest compiled and minified JavaScript -->
-    <script src="/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+<%--    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>--%>
+
+      <script src="js/jquery-ui.js"></script>
 
 
     <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">

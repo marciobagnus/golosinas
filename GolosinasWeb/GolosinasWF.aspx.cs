@@ -184,7 +184,6 @@ public partial class GolosinasWF : System.Web.UI.Page
         lblMensajeExito.Text = string.Empty;
         grdGolosinas.PageIndex = e.NewPageIndex;
         CargarGrilla();
-
     }
 
     protected void Limpiar()
