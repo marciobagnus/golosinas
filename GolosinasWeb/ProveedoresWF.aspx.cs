@@ -11,6 +11,22 @@ public partial class GolosinasWF : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string rol = (string) Session["Rol"];
+        bool acceso = false;
+        
+        if (rol == "Administrador")
+        {
+            acceso = true;
+        }
+
+        if (!acceso) Response.Redirect("Login.aspx");
+
+        if (Session["Usuario"] == string.Empty)
+        {
+            //Usuario Anónimo
+            Response.Redirect("Login.aspx");
+        }
+
         if (!Page.IsPostBack)
         {
             cargarProvincias();
@@ -41,7 +57,7 @@ public partial class GolosinasWF : System.Web.UI.Page
 
         //Asignar la propiedad DataSource
         ddl_provincia.DataSource = listaProv;
-        
+
         ddl_provincia.DataBind();
 
 
@@ -140,7 +156,7 @@ public partial class GolosinasWF : System.Web.UI.Page
 
     protected void btn_Buscar_Click(object sender, EventArgs e)
     {
-           //Establezco la fuente de los datos de la grilla
+        //Establezco la fuente de los datos de la grilla
         grid_proveedores.DataSource = GolosinaDao.ObtenerPorIncremento(txt_ProveedorBuscar.Text);
 
         //Indico que llene la grilla

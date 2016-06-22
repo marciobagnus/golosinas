@@ -9,7 +9,8 @@
 </script>
 
 
-<asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceCabecera" runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <title>Realizar Pedido</title>
 </asp:Content>
 
 

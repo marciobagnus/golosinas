@@ -11,7 +11,7 @@ namespace Entidades
         public int? idEmpleado { get; set; }
         public string nombreYapellido { get; set; }
         public DateTime fechaNacimiento { get; set; }
-        public int? idRol { get; set; }
+        public int idRol { get; set; }
         public string nombreUsuario { get; set; }
 
         public static int int_NullValue = int.MinValue;

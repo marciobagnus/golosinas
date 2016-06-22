@@ -53,8 +53,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProvinciaDao.cs" />
     <Compile Include="ReporteVentasDao.cs" />
+    <Compile Include="RolDao.cs" />
     <Compile Include="TipoDocumentoDao.cs" />
     <Compile Include="TipoGolosinaDao.cs" />
+    <Compile Include="UsuarioDao.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Entidades\Entidades.csproj">

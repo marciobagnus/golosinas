@@ -46,5 +46,41 @@ namespace Dao
             cn.Close();
             return empleados;
         }
+
+        public static EmpleadoEntidad obtenerEmpleadoPorUsuario(UsuarioEntidad user)
+        {
+            SqlConnection cn = new SqlConnection();
+            cn.ConnectionString = stringConexion();
+            cn.Open();
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = @"SELECT * FROM [dbo].[Empleado] WHERE  nombreUsuario =  @nombreUsuario ";
+            cmd.Parameters.AddWithValue("@nombreUsuario", user.nombreUsuario);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.Read())
+            {
+                EmpleadoEntidad e = new EmpleadoEntidad();
+
+                e.idEmpleado = int.Parse(dr["idEmpleado"].ToString());
+                e.nombreYapellido = dr["nombreYApellido"].ToString();
+                e.fechaNacimiento = DateTime.Parse(dr["fechaNacimiento"].ToString());
+                e.idRol = int.Parse(dr["idRol"].ToString());
+                e.nombreUsuario = dr["nombreUsuario"].ToString();
+                dr.Close();
+                cn.Close();
+                return e;
+
+            }
+            else
+            {
+                cn.Close();
+                return null;
+            }
+         
+           
+            
+        }
     }
 }

@@ -58,7 +58,7 @@ namespace Dao
                                        ,@fechaEntrega
                                        ,@idEmpleado
                                        ,@total
-                                       ,@nroPedido);select Scope_Identity() as ID";
+                                       ,@nroPedido); select Scope_Identity() as ID";
                 cmdB.Parameters.AddWithValue("@idProveedor", pedido.idProveedor);
                 cmdB.Parameters.AddWithValue("@fechaPedido", pedido.fechaPedido);
                 cmdB.Parameters.AddWithValue("@fechaEntrega", pedido.fechaEntrega);
