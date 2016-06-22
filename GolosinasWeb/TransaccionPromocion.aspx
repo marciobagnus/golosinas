@@ -18,9 +18,19 @@
                         <div class="col-md-6">
                             <asp:TextBox ID="txtNombre" CssClass="form-control" runat="server"></asp:TextBox>
                         </div>
+                        <asp:RequiredFieldValidator ID="rfvNombre"
+                            runat="server"
+                            ControlToValidate="txtNombre"
+                            ErrorMessage="Ingrese Nombre"
+                            CssClass="alert-danger" Display="Dynamic"
+                            Text="*" ValidationGroup="A" />
+                        <asp:RegularExpressionValidator ID="rvNombre"
+                            runat="server" ErrorMessage="Ingrese un Nombre valido"
+                            ControlToValidate="txtNombre" ValidationExpression="^[a-zA-Z ]*$"
+                            CssClass="alert-danger"
+                            Display="Dynamic"></asp:RegularExpressionValidator>
                     </div>
-
-
+                    
                     <div class="form-group">
                         <label for="txtFechaD" class="col-md-6 control-label">
                             Fecha Desde:
@@ -38,6 +48,15 @@
                         <div class="col-md-6">
                             <asp:TextBox ID="txtFechaH" CssClass="form-control" runat="server"></asp:TextBox>
                         </div>
+                        <asp:RequiredFieldValidator ID="rfvFechaH"
+                            runat="server"
+                            ControlToValidate="txtFechaH"
+                            ErrorMessage="Ingrese Fecha"
+                            CssClass="alert-danger" Display="Dynamic"
+                            Text="*" ValidationGroup="A" />
+                        <asp:CompareValidator ID="cvFecha" ControlToCompare="txtFechaD"
+                            ControlToValidate="txtFechaH" Type="Date" Operator="GreaterThanEqual"
+                            ErrorMessage="*Fecha Invalida" runat="server"></asp:CompareValidator>
                     </div>
 
 
@@ -48,8 +67,13 @@
                             <asp:DropDownList ID="ddlEmpleados" CssClass="form-control" runat="server" AppendDataBoundItems="true">
                                 <asp:ListItem Value="0">Seleccione..</asp:ListItem>
                             </asp:DropDownList>
-
                         </div>
+                        <asp:RequiredFieldValidator ID="rfvEmpleados"
+                            runat="server" ControlToValidate="ddlEmpleados"
+                            ErrorMessage="Seleccione un empleado" InitialValue="0"
+                            ValidationGroup="A"
+                            CssClass="alert-danger"
+                            Display="Dynamic"></asp:RequiredFieldValidator>
                     </div>
 
                     <div class="form-group">
@@ -59,6 +83,27 @@
                         <div class="col-md-6">
                             <asp:TextBox ID="txtPorcentaje" CssClass="form-control" runat="server"></asp:TextBox>
                         </div>
+                        <asp:RequiredFieldValidator ID="rfvPorcentaje"
+                            ControlToValidate="txtPorcentaje"
+                            runat="server"
+                            ErrorMessage="Ingrese el porcentaje"
+                            CssClass="alert-danger" Display="Dynamic"
+                            Text="*"
+                            ValidationGroup="B"></asp:RequiredFieldValidator>
+                        <asp:RangeValidator ID="rvPorcentaje"
+                            ControlToValidate="txtPorcentaje"
+                            runat="server" Type="Double"
+                            CssClass="alert-danger" Display="Dynamic"
+                            MaximumValue="100"
+                            MinimumValue="0"
+                            ErrorMessage="Porcentaje debe estar entre 0 y 100"
+                            Text="*" ValidationGroup="B">
+                        </asp:RangeValidator>
+                        <asp:RegularExpressionValidator ID="revPorcentaje"
+                            runat="server" ControlToValidate="txtPorcentaje"
+                            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
+                            ValidationExpression="[0-9]*\,?[0-9]*">
+                        </asp:RegularExpressionValidator>
                     </div>
 
 
@@ -77,7 +122,7 @@
                                 <asp:DropDownList ID="ddlGolosinas" CssClass="form-control" runat="server" AppendDataBoundItems="true"
                                     AutoPostBack="True" OnSelectedIndexChanged="ddlGolosinas_SelectedIndexChanged">
                                     <asp:ListItem Value="0">Seleccione..</asp:ListItem>
-                                </asp:DropDownList>
+                                </asp:DropDownList>                               
                             </div>
                         </div>
                         <div class="form-group">
@@ -94,6 +139,17 @@
                             <div class="col-md-6">
                                 <asp:TextBox ID="txtCantidad" CssClass="form-control" runat="server"></asp:TextBox>
                             </div>
+                            <asp:RequiredFieldValidator ID="rfvCantidad"
+                            ControlToValidate="txtCantidad"
+                            runat="server"
+                            ErrorMessage="Ingrese la cantidad"
+                            CssClass="alert-danger" Display="Dynamic"                           
+                            ValidationGroup="B"></asp:RequiredFieldValidator>                        
+                        <asp:RegularExpressionValidator ID="revCantidad"
+                            runat="server" ControlToValidate="txtCantidad"
+                            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
+                            ValidationExpression="^\d+$">
+                        </asp:RegularExpressionValidator>
                         </div>
 
 
@@ -107,9 +163,9 @@
             </div>
         </div>
         <div class="btn-group-lg text-center col-md-12">
-            <asp:Button ID="btnAgregar" runat="server" class="btn btn-success" Text="Agregar" OnClick="btnAgregar_Click" />
+            <asp:Button ID="btnAgregar" runat="server" class="btn btn-success" Text="Agregar" ValidationGroup="B" OnClick="btnAgregar_Click" />
             <h3>
-                <asp:Label ID="Label1" class="label label-warning" runat="server"></asp:Label>
+                <asp:Label ID="lblSinStock" class="label label-warning" runat="server"></asp:Label>
             </h3>
         </div>
         <div class="col-md-12">
@@ -166,7 +222,7 @@
 
             <div class="btn-group-lg text-center">
                 <asp:Button ID="btnRegistrar" runat="server" class="btn btn-success" Text="Registrar"
-                    ValidationGroup="Registrar" OnClick="btnRegistrar_Click" />
+                    ValidationGroup="A" OnClick="btnRegistrar_Click" />
                 <asp:Button ID="btnCancelar" runat="server" class="btn btn-danger" Text="Cancelar"
                     OnClientClick="return window.confirm('¿Desea cancelar el registro?');" OnClick="btnCancelar_Click" />
             </div>

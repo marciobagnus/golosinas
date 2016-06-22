@@ -39,24 +39,49 @@ public partial class TransaccionPromocion : System.Web.UI.Page
 
     protected void btnRegistrar_Click(object sender, EventArgs e)
     {
-        if (!Page.IsValid) return;
-        PromocionEntidad promocion = new PromocionEntidad();
-        promocion.nombre = txtNombre.Text;
-        promocion.fechaDesde = DateTime.Parse(txtFechaD.Text);
-        promocion.fechaHasta = DateTime.Parse(txtFechaH.Text);
-        promocion.total = float.Parse(txtTotal.Text);
-        int id;
-        if (int.TryParse(ddlEmpleados.Text, out id))
-            promocion.idEmpleado = id;
-        promocion.descuento = float.Parse(txtDescuento.Text);
+        lblMensajeError.Text = string.Empty;
+        lblMensajeExito.Text = string.Empty;
+        lblSinProductos.Text = string.Empty;
+        lblYaIngresado.Text = string.Empty;
+        lblSinStock.Text = string.Empty;
 
-        PromocionDao.Insertar(promocion, Detalles);
+        if (gvPromocion.Rows.Count != 0)
+        {
+            try
+            {
 
-        Detalles = new List<DetallePromocionEntidad>();
-        DetallesQuery = new List<DetallePromocionQuery>();
+                if (!Page.IsValid) return;
 
-        Limpiar();
-        CargarGrilla();
+                PromocionEntidad promocion = new PromocionEntidad();
+                promocion.nombre = txtNombre.Text;
+                promocion.fechaDesde = DateTime.Parse(txtFechaD.Text);
+                promocion.fechaHasta = DateTime.Parse(txtFechaH.Text);
+                promocion.total = float.Parse(txtTotal.Text);
+                int id;
+                if (int.TryParse(ddlEmpleados.Text, out id))
+                    promocion.idEmpleado = id;
+                promocion.descuento = float.Parse(txtDescuento.Text);
+
+                PromocionDao.Insertar(promocion, Detalles);
+
+                Detalles = new List<DetallePromocionEntidad>();
+                DetallesQuery = new List<DetallePromocionQuery>();
+
+                Limpiar();
+                CargarGrilla();
+
+                lblMensajeExito.Text = "Promocion grabada con éxito";
+
+            }
+            catch (Exception ex)
+            {
+                lblMensajeError.Text = ex.Message;
+            }
+        }
+        else
+            lblSinProductos.Text = "Agregue al menos una Golosina";
+
+
 
 
     }
@@ -82,49 +107,81 @@ public partial class TransaccionPromocion : System.Web.UI.Page
 
     protected void btnAgregar_Click(object sender, EventArgs e)
     {
+        lblMensajeError.Text = string.Empty;
+        lblMensajeExito.Text = string.Empty;
+        lblSinProductos.Text = string.Empty;
+        lblYaIngresado.Text = string.Empty;
+        lblSinStock.Text = string.Empty;
         if (!Page.IsValid) return;
-        int idGolosina = Int32.Parse(ddlGolosinas.SelectedItem.Value);
-        int cantidad = int.Parse(txtCantidad.Text);
-        float subtotal = float.Parse(txtPrecio.Text);
+        if (txtCantidad.Text != string.Empty && ddlGolosinas.SelectedIndex != 0)
+        {
+            try
+            {
+                int idGolosina = Int32.Parse(ddlGolosinas.SelectedItem.Value);
+                int cantidad = int.Parse(txtCantidad.Text);
+                float subtotal = float.Parse(txtPrecio.Text);
 
-        LlenarDetalles(idGolosina, cantidad, subtotal);
-        LlenarDetallesQuery(idGolosina, cantidad, subtotal);
+                LlenarDetalles(idGolosina, cantidad, subtotal);
+                LlenarDetallesQuery(idGolosina, cantidad, subtotal);
 
-        CargarGrilla();
+                CargarGrilla();
 
-        ddlGolosinas.SelectedIndex = 0;
-        txtPrecio.Text = string.Empty;
-        txtCantidad.Text = string.Empty;
+                ddlGolosinas.SelectedIndex = 0;
+                txtPrecio.Text = string.Empty;
+                txtCantidad.Text = string.Empty;
+            }
+            catch (Exception ex)
+            {
+                lblMensajeError.Text = ex.Message;
+            }
+        }
+        else
+            lblYaIngresado.Text = "Seleccione una golosina";
+
 
     }
 
     private void LlenarDetalles(int idGolosina, int cantidad, float subtotal)
     {
+        try
+        {
 
-        GolosinasEntidad golosina = GolosinaDao.ObtenerPorID(idGolosina);
-        DetallePromocionEntidad detalle = new DetallePromocionEntidad();
+            GolosinasEntidad golosina = GolosinaDao.ObtenerPorID(idGolosina);
+            DetallePromocionEntidad detalle = new DetallePromocionEntidad();
 
-        detalle.idGolosina = idGolosina;
-        detalle.cantidad = cantidad;
-        detalle.subtotal = subtotal;
-
-
-        Detalles.Add(detalle);
+            detalle.idGolosina = idGolosina;
+            detalle.cantidad = cantidad;
+            detalle.subtotal = subtotal;
+                        
+            Detalles.Add(detalle);
+        }
+        catch (Exception ex)
+        {
+            lblMensajeError.Text = ex.Message;
+        }
 
     }
 
     private void LlenarDetallesQuery(int idGolosina, int cantidad, float subtotal)
     {
-        GolosinasEntidad golosina = GolosinaDao.ObtenerPorID(idGolosina);
-        DetallePromocionQuery detalleQuery = new DetallePromocionQuery();
+        try
+        {
+            GolosinasEntidad golosina = GolosinaDao.ObtenerPorID(idGolosina);
+            DetallePromocionQuery detalleQuery = new DetallePromocionQuery();
 
-        detalleQuery.idGolosina = idGolosina;
-        detalleQuery.nombre = golosina.nombre;
-        detalleQuery.cantidad = cantidad;
-        detalleQuery.precioVenta = subtotal;
+            detalleQuery.idGolosina = idGolosina;
+            detalleQuery.nombre = golosina.nombre;
+            detalleQuery.cantidad = cantidad;
+            detalleQuery.precioVenta = subtotal;
 
-        detalleQuery.totalParcial = cantidad * subtotal;
-        DetallesQuery.Add(detalleQuery);
+            detalleQuery.totalParcial = cantidad * subtotal;
+            DetallesQuery.Add(detalleQuery);
+
+        }
+        catch (Exception ex)
+        {
+            lblMensajeError.Text = ex.Message;
+        }
 
     }
 
@@ -173,9 +230,15 @@ public partial class TransaccionPromocion : System.Web.UI.Page
 
     protected void ddlGolosinas_SelectedIndexChanged(object sender, EventArgs e)
     {
-        int idGolosina = Int32.Parse(ddlGolosinas.SelectedItem.Value);
-        GolosinasEntidad golosina = GolosinaDao.ObtenerPorID(idGolosina);
-        txtPrecio.Text = golosina.precioVenta.ToString();
+        if (Int32.Parse(ddlGolosinas.SelectedItem.Value) != 0)
+        {
+            lblMensajeExito.Text = string.Empty;
+            int idGolosina = Int32.Parse(ddlGolosinas.SelectedItem.Value);
+            GolosinasEntidad golosina = GolosinaDao.ObtenerPorID(idGolosina);
+            txtPrecio.Text = golosina.precioVenta.ToString();
+        }
+        else
+            Limpiar();
     }
 
 
@@ -186,7 +249,7 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         {
             suma += double.Parse(e.Row.Cells[5].Text);
             txtSubtotal.Text = suma.ToString();
-            float descuento = (float.Parse(txtSubtotal.Text) * int.Parse(txtPorcentaje.Text)) / 100;
+            float descuento = (float.Parse(txtSubtotal.Text) * float.Parse(txtPorcentaje.Text)) / 100;
             txtDescuento.Text = descuento.ToString();
             float total = float.Parse(txtSubtotal.Text) - descuento;
             txtTotal.Text = total.ToString();

@@ -109,7 +109,6 @@ namespace Dao
 
         }
 
-
         public static void Actualizar(GolosinasEntidad golosina)
         {
             SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
@@ -227,6 +226,37 @@ namespace Dao
             dr.Close();
             cn.Close();
             return g;
+
+        }
+
+        public static void ActualizarStock(int idGolosina, int cantidad, Boolean sumar)
+        {
+            GolosinasEntidad g = GolosinaDao.ObtenerPorID(idGolosina);
+            int cantidadStock = 0;
+
+            if (sumar == true)
+                cantidadStock = g.stockActual + cantidad;
+            else
+                cantidadStock = g.stockActual - cantidad;
+
+
+            SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
+            cn.Open();
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = @"UPDATE Golosina SET
+                                stockActual = @stockActual
+                                WHERE idGolosina=@idGolosina";
+
+            cmd.Parameters.AddWithValue("@idGolosina", idGolosina);
+            cmd.Parameters.AddWithValue("@stockActual", cantidadStock);
+
+            cmd.ExecuteNonQuery();
+
+            cn.Close();
+            
+            
 
         }
     }

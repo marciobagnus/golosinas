@@ -11,7 +11,7 @@ namespace Entidades
         public int? idPromocion { get; set; }
         public int? idDetallePromocion { get; set; }
         public int cantidad { get; set; }
-        public int? idGolosina { get; set; }
+        public int idGolosina { get; set; }
         public float subtotal { get; set; }
 
     }
