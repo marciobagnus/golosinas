@@ -43,7 +43,7 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
 
-      <div class="contact section" id="section-5">
+      <div  class="contact section" id="section-5">
         <div class="container">
             <h3 class="head">Contacto</h3>
             <div class="row">

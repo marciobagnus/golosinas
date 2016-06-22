@@ -22,7 +22,7 @@ public partial class Login : System.Web.UI.Page
         if (ValidarUsuario(user))
         {
             Session["Usuario"] = txtUsuario.Text;
-            Response.Redirect("Home.aspx");
+            Response.Redirect("BienvenidaWF.aspx");
         }
         else
             Session["Usuario"] = string.Empty;

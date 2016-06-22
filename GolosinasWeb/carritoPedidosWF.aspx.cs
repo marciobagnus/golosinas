@@ -12,16 +12,32 @@ public partial class carritoPedidos : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string rol = (string)Session["Rol"];
+        bool acceso = false;
+        if (rol == "administrador")
+        {
+            acceso = true;
+        }
 
+        if (!acceso) Response.Redirect("Login.aspx");
+
+        if (Session["Usuario"] == string.Empty)
+        {
+            //Usuario Anónimo
+            Response.Redirect("Login.aspx");
+        }
         // Check
         if (!Page.IsPostBack)
         {
-            Session.Clear();
+           
             cargarGrillaGolosinas();
             DateTime hoy = DateTime.Today;
             lbl_fechaPedido.Text = hoy.ToString("dd/MM/yyyy");
             lbl_fechaEntrega.Text = hoy.AddDays(5).ToString("dd/MM/yyyy");
             cargarProveedores();
+            btn_generarPedido.Visible = false;
+            Session["ListaDetallesPedido"] = null;
+
         }
     }
 
@@ -196,6 +212,7 @@ public partial class carritoPedidos : System.Web.UI.Page
     
     private void cargarGrillaCarrito()
     {
+        btn_generarPedido.Visible = true;
         grillaCarrito.DataSource = ListaCarrito;
         grillaCarrito.DataBind();
     }
@@ -266,6 +283,8 @@ public partial class carritoPedidos : System.Web.UI.Page
         Session.Clear();
         cargarGrillaCarrito();
         lbl_precioTotal.Text = string.Empty;
+        btn_generarPedido.Visible = false;
+
     }
 
 

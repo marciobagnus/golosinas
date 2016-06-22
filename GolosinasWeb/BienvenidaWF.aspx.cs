@@ -5,11 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class home : System.Web.UI.Page
+public partial class BienvenidaWF : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!Page.IsPostBack)
-            Session.Clear();
+        lblUsuario.Text = Session["Usuario"].ToString();
+        lblRol.Text = Session["Rol"].ToString();
     }
 }

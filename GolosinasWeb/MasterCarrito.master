@@ -82,6 +82,7 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="Login.aspx"><span class="glyphicon glyphicon-log-in"></span>Iniciar Sesión</a></li>
+                    <li><a href="Logout.aspx"><span class="glyphicon glyphicon-log-out"></span>Cerrar Sesión</a></li>
                 </ul>
             </div>
 

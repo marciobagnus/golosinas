@@ -14,7 +14,7 @@ public partial class GolosinasWF : System.Web.UI.Page
         string rol = (string) Session["Rol"];
         bool acceso = false;
         
-        if (rol == "Administrador")
+        if (rol == "administrador")
         {
             acceso = true;
         }
