@@ -18,7 +18,7 @@ namespace Dao
             con.Open();
             SqlCommand cmdA = new SqlCommand();
             cmdA.Connection = con;
-            cmdA.CommandText = @"SELECT * FROM[BDGolosinas].[dbo].[Provincia]";
+            cmdA.CommandText = @"SELECT * FROM [dbo].[Provincia]";
             SqlDataReader dr = cmdA.ExecuteReader();
             List<ProvinciaEntidad> listaProv= new List<ProvinciaEntidad>();
             

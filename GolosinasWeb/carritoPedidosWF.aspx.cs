@@ -55,7 +55,7 @@ public partial class carritoPedidos : System.Web.UI.Page
 
         //le cargo los datos a la nueva lista
 
-        for (int i = 0; i < listaGolosinasCompleta.Capacity - 1; i++)
+        for (int i = 0; i < listaGolosinasCompleta.Count - 1; i++)
         {
             DetallePedidoEntidad goCarrito = new DetallePedidoEntidad();
 
