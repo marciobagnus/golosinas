@@ -49,7 +49,6 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         {
             try
             {
-
                 if (!Page.IsValid) return;
 
                 PromocionEntidad promocion = new PromocionEntidad();
@@ -63,15 +62,12 @@ public partial class TransaccionPromocion : System.Web.UI.Page
                 promocion.descuento = float.Parse(txtDescuento.Text);
 
                 PromocionDao.Insertar(promocion, Detalles);
-
                 Detalles = new List<DetallePromocionEntidad>();
                 DetallesQuery = new List<DetallePromocionQuery>();
 
                 Limpiar();
                 CargarGrilla();
-
                 lblMensajeExito.Text = "Promocion grabada con éxito";
-
             }
             catch (Exception ex)
             {
@@ -80,10 +76,6 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         }
         else
             lblSinProductos.Text = "Agregue al menos una Golosina";
-
-
-
-
     }
 
     protected void Limpiar()
@@ -97,12 +89,8 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         txtPrecio.Text = string.Empty;
         txtSubtotal.Text = string.Empty;
         txtTotal.Text = string.Empty;
-
         ddlEmpleados.SelectedIndex = 0;
         ddlGolosinas.SelectedIndex = 0;
-
-
-
     }
 
     protected void btnAgregar_Click(object sender, EventArgs e)
@@ -112,6 +100,7 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         lblSinProductos.Text = string.Empty;
         lblYaIngresado.Text = string.Empty;
         lblSinStock.Text = string.Empty;
+
         if (!Page.IsValid) return;
         if (txtCantidad.Text != string.Empty && ddlGolosinas.SelectedIndex != 0)
         {
@@ -124,11 +113,11 @@ public partial class TransaccionPromocion : System.Web.UI.Page
                 LlenarDetalles(idGolosina, cantidad, subtotal);
                 LlenarDetallesQuery(idGolosina, cantidad, subtotal);
 
-                CargarGrilla();
-
                 ddlGolosinas.SelectedIndex = 0;
                 txtPrecio.Text = string.Empty;
                 txtCantidad.Text = string.Empty;
+
+                CargarGrilla();
             }
             catch (Exception ex)
             {
@@ -137,35 +126,31 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         }
         else
             lblYaIngresado.Text = "Seleccione una golosina";
-
-
     }
 
     private void LlenarDetalles(int idGolosina, int cantidad, float subtotal)
     {
         try
-        {
-
+        {           
             GolosinasEntidad golosina = GolosinaDao.ObtenerPorID(idGolosina);
             DetallePromocionEntidad detalle = new DetallePromocionEntidad();
 
             detalle.idGolosina = idGolosina;
             detalle.cantidad = cantidad;
             detalle.subtotal = subtotal;
-                        
-            Detalles.Add(detalle);
+            if (cantidad <= golosina.stockActual)
+                Detalles.Add(detalle);            
         }
         catch (Exception ex)
         {
             lblMensajeError.Text = ex.Message;
         }
-
     }
 
     private void LlenarDetallesQuery(int idGolosina, int cantidad, float subtotal)
     {
         try
-        {
+        {            
             GolosinasEntidad golosina = GolosinaDao.ObtenerPorID(idGolosina);
             DetallePromocionQuery detalleQuery = new DetallePromocionQuery();
 
@@ -173,25 +158,25 @@ public partial class TransaccionPromocion : System.Web.UI.Page
             detalleQuery.nombre = golosina.nombre;
             detalleQuery.cantidad = cantidad;
             detalleQuery.precioVenta = subtotal;
-
-            detalleQuery.totalParcial = cantidad * subtotal;
-            DetallesQuery.Add(detalleQuery);
-
+            if (cantidad <= golosina.stockActual)
+            {
+                detalleQuery.totalParcial = cantidad * subtotal;
+                DetallesQuery.Add(detalleQuery);
+            }
+            else
+                lblSinStock.Text = "No hay stock para la cantidad solicitada";         
         }
         catch (Exception ex)
         {
             lblMensajeError.Text = ex.Message;
         }
-
     }
-
 
     private void CargarGrilla()
     {
         gvPromocion.DataSource = DetallesQuery;
         gvPromocion.DataKeyNames = new string[] { "idGolosina" };
         gvPromocion.DataBind();
-
     }
 
     public List<DetallePromocionEntidad> Detalles
@@ -208,7 +193,6 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         {
             Session["detalles"] = value;
         }
-
     }
 
     public List<DetallePromocionQuery> DetallesQuery
@@ -225,22 +209,40 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         {
             Session["detallesQuery"] = value;
         }
-
     }
 
     protected void ddlGolosinas_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (Int32.Parse(ddlGolosinas.SelectedItem.Value) != 0)
         {
+            btnAgregar.CssClass = "btn btn-success";
+            btnAgregar.Enabled = true;
+            txtCantidad.Enabled = true;
+            lblYaIngresado.Text = string.Empty;
             lblMensajeExito.Text = string.Empty;
+            lblSinStock.Text = string.Empty;
             int idGolosina = Int32.Parse(ddlGolosinas.SelectedItem.Value);
             GolosinasEntidad golosina = GolosinaDao.ObtenerPorID(idGolosina);
+            foreach (DetallePromocionQuery deq in DetallesQuery)
+            {
+                if (idGolosina == deq.idGolosina)
+                {
+                    lblYaIngresado.Text = "Golosina ya ingresada, se mantendra la cantidad anterior." + "<br />" + "Eliminela si desea modificar";
+                    btnAgregar.CssClass = "btn btn-success disabled";
+                    btnAgregar.Enabled = false;
+                    txtCantidad.Enabled = false;
+                    break;
+                }
+            }
             txtPrecio.Text = golosina.precioVenta.ToString();
         }
         else
+        {
+            lblYaIngresado.Text = string.Empty;
+            lblSinStock.Text = string.Empty;
             Limpiar();
+        }
     }
-
 
     public double suma;
     protected void gvPromocion_RowDataBound(object sender, GridViewRowEventArgs e)
@@ -257,20 +259,18 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         }
         /* else if (e.Row.RowType == DataControlRowType.Footer)
          {
-             e.Row.Cells[2].Text = "Grand Total";
+             e.Row.Cells[2].Text = "Total";
              e.Row.Cells[2].Font.Bold = true;
 
              e.Row.Cells[3].Text = suma.ToString();
              e.Row.Cells[3].Font.Bold = true;
 
          }*/
-
     }
 
     protected void gvPromocion_SelectedIndexChanged(object sender, EventArgs e)
     {
         int idGolosina = int.Parse(gvPromocion.SelectedDataKey.Value.ToString());
-
         foreach (DetallePromocionQuery deq in DetallesQuery)
         {
             if (deq.idGolosina == idGolosina)
@@ -278,7 +278,6 @@ public partial class TransaccionPromocion : System.Web.UI.Page
                 DetallesQuery.Remove(deq);
                 break;
             }
-
         }
         foreach (DetallePromocionEntidad de in Detalles)
         {
@@ -287,22 +286,23 @@ public partial class TransaccionPromocion : System.Web.UI.Page
                 Detalles.Remove(de);
                 break;
             }
-
         }
 
         txtSubtotal.Text = string.Empty;
         txtDescuento.Text = string.Empty;
         txtTotal.Text = string.Empty;
-
+        lblYaIngresado.Text = string.Empty;
+        ddlGolosinas.SelectedIndex = 0;
+        txtPrecio.Text = string.Empty;
+        txtCantidad.Text = string.Empty;
+        txtCantidad.Enabled = true;
         CargarGrilla();
-
-
     }
-
-
 
     protected void btnCancelar_Click(object sender, EventArgs e)
     {
         Response.Redirect("home.aspx");
+        Detalles = null;
+        DetallesQuery = null;
     }
 }

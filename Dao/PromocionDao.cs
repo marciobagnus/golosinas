@@ -59,7 +59,7 @@ namespace Dao
                     cmdDe.Parameters.AddWithValue("@idGolosina", de.idGolosina);
                     cmdDe.Transaction = tran;
                     de.idDetallePromocion = Convert.ToInt32(cmdDe.ExecuteScalar());
-                    GolosinaDao.ActualizarStock(de.idGolosina, de.cantidad, false);
+                   // GolosinaDao.ActualizarStock(de.idGolosina, de.cantidad, false);
                 }
                 tran.Commit();
             }
