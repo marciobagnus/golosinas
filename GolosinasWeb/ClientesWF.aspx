@@ -90,9 +90,6 @@
     <asp:RadioButton ID="rdbFemenino" Text=" Femenino" runat="server" AutoPostBack="True" OnCheckedChanged="rdbFemenino_CheckedChanged" /> &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;<asp:RadioButton ID="rdbMasculino" Text=" Masculino" runat="server" AutoPostBack="True" OnCheckedChanged="rdbMasculino_CheckedChanged" />
     <br />
     <br />
-   <%-- <label>Nombre de Usuario:</label>
-    <asp:TextBox ID="txtUsuario" placeholder="Ingrese nombre de usuario" CssClass="form-control" runat="server"></asp:TextBox>
-    <br />--%>
     <asp:Button ID="btnGuardar" runat="server" CssClass="btn btn-primary" Text="Guardar" OnClick="btn_guardar_Click" ValidationGroup="A"/>
     <asp:Button ID="btnNuevo" runat="server" Text="Nuevo" class="btn btn-default" OnClick="btnNuevo_Click" />
     <asp:Button ID="btnEliminar" runat="server" Text="Eliminar" class="btn btn-warning " OnClick="btnEliminar_Click" />

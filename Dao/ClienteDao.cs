@@ -39,7 +39,6 @@ namespace Dao
             cmd.Parameters.AddWithValue("@sexo", cliente.sexo);
             cmd.Parameters.AddWithValue("@domicilio", cliente.domicilio);
             cmd.Parameters.AddWithValue("@numDoc", cliente.numeroDocumento);
-            //cmd.Parameters.AddWithValue("@nomUsuario", cliente.nombreUsuario);   
 
            cliente.idCliente = Convert.ToInt32(cmd.ExecuteScalar());
 
@@ -67,7 +66,6 @@ namespace Dao
             cmd.Parameters.AddWithValue("@sexo", cliente.sexo);
             cmd.Parameters.AddWithValue("@domicilio", cliente.domicilio);
             cmd.Parameters.AddWithValue("@numDoc", cliente.numeroDocumento);
-            //cmd.Parameters.AddWithValue("@nomusuario", cliente.nombreUsuario);
 
             cmd.ExecuteNonQuery();
 
@@ -115,7 +113,6 @@ namespace Dao
                 c.sexo = dr["sexo"].ToString();
                 c.domicilio = dr["domicilio"].ToString();
                 c.numeroDocumento = int.Parse(dr["numeroDocumento"].ToString());
-                //c.nombreUsuario = dr["nombreUsuario"].ToString();
 
                 clientes.Add(c);
             }
@@ -150,7 +147,7 @@ namespace Dao
                 c.sexo = dr["sexo"].ToString();
                 c.domicilio = dr["domicilio"].ToString();
                 c.numeroDocumento = int.Parse(dr["numeroDocumento"].ToString());
-                //c.nombreUsuario = dr["nombreUsuario"].ToString();
+
             }
             dr.Close();
             cn.Close();

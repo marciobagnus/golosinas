@@ -228,8 +228,7 @@ namespace Dao
             return g;
 
         }
-
-        public static void ActualizarStock(int idGolosina, int cantidad, Boolean sumar)
+ public static void ActualizarStock(int idGolosina, int cantidad, Boolean sumar)
         {
             GolosinasEntidad g = GolosinaDao.ObtenerPorID(idGolosina);
             int cantidadStock = 0;
@@ -258,6 +257,42 @@ namespace Dao
             
             
 
-        }
-    }
+        }public static List<GolosinasEntidad> ObtenerPorTipo(int? idTipo)
+        {
+            List<GolosinasEntidad> listaGolosinas = new List<GolosinasEntidad>();
+
+            SqlConnection cn = new SqlConnection(ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString);
+            cn.Open();
+
+            SqlCommand cmd = new SqlCommand();
+            cmd.Connection = cn;
+            cmd.CommandText = @"SELECT idGolosina, nombre,
+                                precioCompra, precioVenta,
+                                stockActual, stockMinimo,
+                                listoParaPedir, idTipoGolosina, esAptoCeliaco
+                                FROM Golosina where idTipoGolosina=@idTipo";
+            cmd.Parameters.AddWithValue("@idTipo", idTipo);
+            SqlDataReader dr = cmd.ExecuteReader();
+
+            if (dr.Read())
+            {
+                GolosinasEntidad g = new GolosinasEntidad();
+
+                g.idGolosina = int.Parse(dr["idGolosina"].ToString());
+                g.nombre = dr["nombre"].ToString();
+                g.precioCompra = float.Parse(dr["precioCompra"].ToString());
+                g.precioVenta = float.Parse(dr["precioVenta"].ToString());
+                g.stockActual = int.Parse(dr["stockActual"].ToString());
+                g.stockMinimo = int.Parse(dr["stockMinimo"].ToString());
+                g.listoParaPedir = (bool)dr["listoParaPedir"];
+                g.idTipoGolosina = int.Parse(dr["idTipoGolosina"].ToString());
+                g.esAptoCeliaco = (bool)dr["esAptoCeliaco"];
+
+                listaGolosinas.Add(g);
+            }
+            dr.Close();
+            cn.Close();
+            return listaGolosinas;
+
+        }    }
 }

@@ -82,6 +82,7 @@
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="ClientesWF.aspx" runat="server">Clientes ABM</a></li>
                             <li><a href="ReporteVentasWF.aspx" runat="server">Informe de Ventas</a></li>
+                            <li><a href="TransaccionVenta.aspx" runat="server">Registrar Venta</a></li>
 
                         </ul>
                     </li>

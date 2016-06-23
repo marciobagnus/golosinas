@@ -17,8 +17,7 @@ namespace Dao
             return ConfigurationManager.ConnectionStrings["miConexion"].ConnectionString;
         }
 
-        public static List<FacturaXClienteXEmpleadoEntidad> ObtenerVentaPorFiltro(
-    string apellidoYNombreCliente, int? idEmpleado, DateTime? fecha)
+        public static List<FacturaXClienteXEmpleadoEntidad> ObtenerVentaPorFiltro(string apellidoYNombreCliente, int? idEmpleado, DateTime? fechaDesde, DateTime? fechaHasta)
         {
             List<FacturaXClienteXEmpleadoEntidad> ventas = new List<FacturaXClienteXEmpleadoEntidad>();
             FacturaXClienteXEmpleadoEntidad f = null;
@@ -30,39 +29,44 @@ namespace Dao
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = cn;
             cmd.CommandText = @"
-            SELECT        Factura.fecha, Cliente.nombreYApellido, Empleado.nombreYApellido, Factura.Total
+            SELECT        Factura.fecha, c.nombreYApellido as nombreCli, Empleado.nombreYApellido as nombreEmp, Factura.Total
             FROM            Factura INNER JOIN
-                         Cliente ON Factura.IdCliente = Cliente.IdCliente
+                         Cliente c ON Factura.IdCliente = c.IdCliente
                                     INNER JOIN
                          Empleado ON Factura.idEmpleado = Empleado.idEmpleado
             where 1 = 1";
 
             if (!string.IsNullOrEmpty(apellidoYNombreCliente))
             {
-                cmd.CommandText += " and Cliente.nombreYApellido like @apeCli %";
-                cmd.Parameters.AddWithValue("@apeCli", apellidoYNombreCliente);
+                cmd.CommandText += " and c.nombreYApellido like @apeCli";
+                cmd.Parameters.AddWithValue("@apeCli", "%" + apellidoYNombreCliente + "%");
             }
             if (idEmpleado.HasValue)
             {
                 cmd.CommandText += " and Empleado.idEmpleado = @idEmp";
                 cmd.Parameters.AddWithValue("@idEmp", idEmpleado);
             }
-            if (!string.IsNullOrEmpty(fecha.ToString()))
+            if (fechaDesde.HasValue)
             {
-                cmd.CommandText += " and Factura.fecha like @fecha";
-                cmd.Parameters.AddWithValue("@fecha", fecha);
+                cmd.CommandText += " and Factura.fecha >= @fechaDesde";
+                cmd.Parameters.AddWithValue("@fechaDesde", fechaDesde);
+            }
+            if (fechaHasta.HasValue)
+            {
+                cmd.CommandText += " and Factura.fecha <= @fechaHasta";
+                cmd.Parameters.AddWithValue("@fechaHasta", fechaHasta);
             }
 
-
             SqlDataReader dr = cmd.ExecuteReader();
+
             while (dr.Read())
             {
                 f = new FacturaXClienteXEmpleadoEntidad();
 
-                f.fechaFactura = (DateTime)dr["Factura.fecha"];
-                f.nombreYapellidoCliente = dr["Cliente.nombreYApellido"].ToString();
-                f.nombreYapellidoEmpleado = dr["Empleado.nombreYApellido"].ToString();
-                f.totalFactura = decimal.Parse(dr["Factura.total"].ToString());
+                f.fechaFactura = DateTime.Parse(dr["fecha"].ToString());
+                f.nombreYapellidoCliente = dr["nombreCli"].ToString();
+                f.nombreYapellidoEmpleado = dr["nombreEmp"].ToString();
+                f.totalFactura = decimal.Parse(dr["total"].ToString());
 
                 ventas.Add(f);
             }

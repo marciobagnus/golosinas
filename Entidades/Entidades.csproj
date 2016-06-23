@@ -41,10 +41,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClienteEntidad.cs" />
+    <Compile Include="DetalleFacturaEntidad.cs" />
     <Compile Include="DetallePedidoEntidad.cs" />
     <Compile Include="DetallePromocionEntidad.cs" />
     <Compile Include="DetallePromocionQuery.cs" />
     <Compile Include="EmpleadoEntidad.cs" />
+    <Compile Include="FacturaEntidad.cs" />
     <Compile Include="FacturaXClienteXEmpleadoEntidad.cs" />
     <Compile Include="GolosinaEntidad.cs" />
     <Compile Include="GolosinaQuery.cs" />
@@ -56,6 +58,7 @@
     <Compile Include="ProvinciaEntidad.cs" />
     <Compile Include="RolEntidad.cs" />
     <Compile Include="TipoDocumentoEntidad.cs" />
+    <Compile Include="TipoFacturaEntidad.cs" />
     <Compile Include="TipoGolosinaEntidad.cs" />
     <Compile Include="UsuarioEntidad.cs" />
   </ItemGroup>

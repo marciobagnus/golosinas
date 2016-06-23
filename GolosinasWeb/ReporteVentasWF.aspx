@@ -13,68 +13,56 @@
     <br />
         <label>Apellido del Cliente:</label>
     <asp:TextBox ID="txtApellido" placeholder="Ingrese apellido del cliente" CssClass="form-control" runat="server"></asp:TextBox>
- <%--     <asp:RequiredFieldValidator ID="rfvApellido"
-            runat="server"
-            ControlToValidate="txtApellido"
-            ErrorMessage="Ingrese Apellido"
-            CssClass="alert-danger" Display="Dynamic"
-            Text="*" ValidationGroup="A" />--%>
+
         <asp:RegularExpressionValidator ID="rvApellido"
              runat="server" ErrorMessage="Ingrese un Apellido válido"
              ControlToValidate="txtApellido" ValidationExpression="^[a-zA-Z ]*$"
              CssClass="alert-danger"
              Display="Dynamic"></asp:RegularExpressionValidator>
     <br />
- <%--   <label>Nombre del Cliente:</label>
-    <asp:TextBox ID="txtNombre" placeholder="Ingrese nombre del cliente" CssClass="form-control" runat="server"></asp:TextBox>
-      <asp:RequiredFieldValidator ID="rfvNombre"
-            runat="server"
-            ControlToValidate="txtNombre"
-            ErrorMessage="Ingrese Nombre"
-            CssClass="alert-danger" Display="Dynamic"
-            Text="*" ValidationGroup="A" />
-        <asp:RegularExpressionValidator ID="rvNombre"
-             runat="server" ErrorMessage="Ingrese un Nombre válido"
-             ControlToValidate="txtNombre" ValidationExpression="^[a-zA-Z ]*$"
-             CssClass="alert-danger"
-             Display="Dynamic"></asp:RegularExpressionValidator>
-    <br />--%>
-        <label>Fecha de la Venta:</label>
-    <asp:TextBox ID="txtFechaFactura" placeholder="DD/MM/AAAA" CssClass="form-control " runat="server"></asp:TextBox>
-    <%-- <asp:RequiredFieldValidator ID="rfvFecha"
-            runat="server"
-            ControlToValidate="txtFechaFactura"
-            ErrorMessage="Ingrese Fecha de Venta"
-            CssClass="alert-danger" Display="Dynamic"
-            Text="*" ValidationGroup="A" />--%>
-       <%-- <asp:RegularExpressionValidator ID="rvFecha"
-             runat="server" ErrorMessage="Ingrese una Fecha válida"
-             ControlToValidate="txtNumDoc" ValidationExpression="^(0[1-9]|[12][0-9]|3[01])[-/.](0[1-9]|1[012])[-/.](19|20)\d\d$"
-             CssClass="alert-danger"
-             Display="Dynamic"></asp:RegularExpressionValidator>--%>
+
+                        <label>Fecha Desde:</label>
+                        <asp:TextBox ID="txtFechaDesde" placeholder="DD/MM/AAAA" CssClass="form-control" runat="server" MaxLength="50"></asp:TextBox>
+                        <asp:RangeValidator ID="rvFechaDesde"
+                            ControlToValidate="txtFechaDesde"
+                            runat="server" Type="Date"
+                            CssClass="alert-danger" Display="Dynamic"
+                            MaximumValue="01/01/2900"
+                            MinimumValue="01/01/1900"
+                            ErrorMessage="Fecha de la venta debe estar entre 01/01/1900-01/01/2900"
+                            Text="*" ValidationGroup="A"> </asp:RangeValidator>
+    <br />
+                        <label>Fecha Hasta:</label>
+                        <asp:TextBox ID="txtFechaHasta" placeholder="DD/MM/AAAA" CssClass="form-control" runat="server" MaxLength="50"></asp:TextBox>
+                        <asp:RangeValidator ID="rvFechaHasta"
+                            ControlToValidate="txtFechaHasta"
+                            runat="server" Type="Date"
+                            CssClass="alert-danger" Display="Dynamic"
+                            MaximumValue="01/01/2900"
+                            MinimumValue="01/01/1900"
+                            ErrorMessage="Fecha de la venta debe estar entre 01/01/1900-01/01/2900"
+                            Text="*" ValidationGroup="A"> </asp:RangeValidator>
     <br />
     <label for="ddlEmpleados">Empleado:</label>
         <asp:DropDownList ID="ddlEmpleados" CssClass="form-control" runat="server" AppendDataBoundItems="true">
-            <asp:ListItem Value="0">Seleccione..</asp:ListItem>
+            <asp:ListItem Value="null">Seleccione..</asp:ListItem>
         </asp:DropDownList>
-       <%-- <asp:RequiredFieldValidator ID="rfvEmpleados"
-            runat="server" ControlToValidate="ddlEmpleados"
-            ErrorMessage="Seleccione un Empleado" InitialValue="0"
-            CssClass="alert-danger"
-            Display="Dynamic"></asp:RequiredFieldValidator>--%>
     <br />
     <br />
     <asp:Button ID="btnBuscarVentas" runat="server" CssClass="btn btn-primary" Text="Buscar ventas" OnClick="btnBuscarVentas_Click" ValidationGroup="A"/>
-    <asp:Button ID="btnNuevoReporte" runat="server" Text="Nuevo Reporte" class="btn btn-default" />
-
+    <br /> 
+    <br />  
+    <asp:Label ID="lblMensajeExito" class="label label-success" runat="server"></asp:Label>
+    <asp:Label ID="lblMensajeError" class="label label-danger" runat="server"></asp:Label>           
     <br />
-    <br />
-    <asp:GridView ID="gvVentas" CssClass="table table-hover table-striped" AutoGenerateColumns="false" runat="server" OnPageIndexChanging="gvVentas_PageIndexChanging">
+    <br />                   
+    <asp:GridView ID="gvVentas" CssClass="table table-hover table-striped" AutoGenerateColumns="false" runat="server" 
+        GridLines="None" AllowPaging="True" PageSize="10" Width="438px" OnPageIndexChanging="gvVentas_PageIndexChanging">
         <Columns>
-            <asp:BoundField DataField="Factura.fecha" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Fecha" />
-            <asp:BoundField DataField="Cliente.nombreYapellido" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Cliente" />
-            <asp:BoundField DataField="Empleado.nombreYApellido" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Empleado" /> 
-            <asp:BoundField DataField="Factura.total" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Monto Total" />
+            <asp:BoundField DataField="fechaFactura" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Fecha" DataFormatString="{0:dd/MM/yyyy}"/>
+            <asp:BoundField DataField="nombreYapellidoCliente" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Cliente" />
+            <asp:BoundField DataField="nombreYApellidoEmpleado" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Empleado" /> 
+            <asp:BoundField DataField="totalFactura" ItemStyle-CssClass="col-lg-3 text-center" HeaderText="Monto Total" />
         </Columns>
     </asp:GridView>
 

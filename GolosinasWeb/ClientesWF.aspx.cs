@@ -11,6 +11,21 @@ public partial class ClientesWF : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string rol = (string)Session["Rol"];
+        bool acceso = false;
+        if (rol == "administrador")
+        {
+            acceso = true;
+        }
+
+        if (!acceso) Response.Redirect("Login.aspx");
+
+        if (Session["Usuario"] == string.Empty)
+        {
+            //Usuario Anónimo
+            Response.Redirect("Login.aspx");
+        }
+
         if (!Page.IsPostBack)
         {
             cargarTiposDocumento();
@@ -43,7 +58,7 @@ public partial class ClientesWF : System.Web.UI.Page
         txtDomicilio.Text = string.Empty;
         rdbFemenino.Checked = false;
         rdbMasculino.Checked = false;
-        //txtUsuario.Text = string.Empty;
+
         ID = null;
         btnEliminar.Enabled = false;
         btnEliminar.CssClass = "btn btn-warning";
@@ -61,7 +76,6 @@ public partial class ClientesWF : System.Web.UI.Page
 
         ddlTipoDoc.DataSource = tiposDocumento;
 
-        ddlTipoDoc.SelectedIndex = 1;
         ddlTipoDoc.DataBind();
     }
 
@@ -89,12 +103,11 @@ public partial class ClientesWF : System.Web.UI.Page
 
         cliente.nombreYapellido = txtApellido.Text + " " + txtNombre.Text;
         cliente.domicilio = txtDomicilio.Text;
-        //cliente.nombreUsuario = txtUsuario.Text;
 
         if (rdbFemenino.Checked)
-            cliente.sexo = "femenino";
+            cliente.sexo = "femenino  ";
         else if (rdbMasculino.Checked)
-            cliente.sexo = "masculino";
+            cliente.sexo = "masculino ";
 
         int tipoDoc;
         if (int.TryParse(ddlTipoDoc.Text, out tipoDoc))
@@ -139,19 +152,19 @@ public partial class ClientesWF : System.Web.UI.Page
         string[] cadenaFechas = fecha.Split(' ');
         txtNombre.Text = cadenasNyA[1];
         txtApellido.Text = cadenasNyA[0];
-        ddlTipoDoc.SelectedIndex = cliSelec.idTipoDocumento - 1;
+        ddlTipoDoc.SelectedIndex = cliSelec.idTipoDocumento;
         txtNumDoc.Text = cliSelec.numeroDocumento.ToString();
         txtFechaNacimiento.Text = cadenaFechas[0];
         txtDomicilio.Text = cliSelec.domicilio;
-        if (cliSelec.sexo == "femenino")
+
+        if (cliSelec.sexo == "femenino  ")
         {
             rdbFemenino.Checked = true;
         }
-        else if (cliSelec.sexo == "masculino")
+        else if (cliSelec.sexo == "masculino ")
         {
             rdbMasculino.Checked = true;
         }
-        //txtUsuario.Text = cliSelec.nombreUsuario;
 
         btnEliminar.Enabled = true;
     }
@@ -163,17 +176,15 @@ public partial class ClientesWF : System.Web.UI.Page
 
     protected void rdbFemenino_CheckedChanged(object sender, EventArgs e)
     {
-        //if (rdbFemenino.Checked == true)
-        //{
+   
             rdbMasculino.Checked = false;
-        //}
+   
     }
 
     protected void rdbMasculino_CheckedChanged(object sender, EventArgs e)
     {
-        //if (rdbMasculino.Checked == true)
-        //{
+   
             rdbFemenino.Checked = false;
-        //}
+    
     }
 }

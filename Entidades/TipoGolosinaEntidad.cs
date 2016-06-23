@@ -10,7 +10,7 @@ namespace Entidades
     { 
         public TipoGolosinaEntidad() { }
 
-        public int idTipoGolosina { get; set; }
+        public int? idTipoGolosina { get; set; }
         public string descripcion { get; set; }
 
     }
