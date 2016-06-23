@@ -18,7 +18,7 @@ namespace Dao
             //Crear objeto command 
             SqlCommand cmdA = new SqlCommand();
             cmdA.Connection = con;
-            cmdA.CommandText = @"SELECT * FROM[BDGolosinas].[dbo].[Usuario] WHERE nombreUsuario =@nombreUsuario AND pass=@pass";
+            cmdA.CommandText = @"SELECT * FROM Usuario WHERE nombreUsuario =@nombreUsuario AND pass=@pass";
             cmdA.Parameters.AddWithValue("@nombreUsuario", user.nombreUsuario);
             cmdA.Parameters.AddWithValue("@pass", user.pass);
             SqlDataReader dr = cmdA.ExecuteReader();

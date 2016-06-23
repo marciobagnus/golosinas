@@ -15,7 +15,6 @@
                         <asp:DropDownList ID="ddlTipo" runat="server" CssClass="form-control" AppendDataBoundItems="true">
                             <asp:ListItem Value="null">Seleccione..</asp:ListItem>
                         </asp:DropDownList>
-
                     </div>
                     <div class="form-group">
                         <label for="ddlCeliaco" id="lblCeliaco">Celiacos</label>

@@ -10,7 +10,7 @@ using Dao;
 public partial class GolosinaQueryWF : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
-    {
+    {        
         string rol = (string)Session["Rol"];
         bool acceso = false;
         if (rol == "administrador")
