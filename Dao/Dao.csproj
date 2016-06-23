@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="ClienteDao.cs" />
     <Compile Include="DetallePromocionQueryDao.cs" />
+    <Compile Include="PedidoQueryDao.cs" />
     <Compile Include="PromocionDao.cs" />
     <Compile Include="EmpleadoDao.cs" />
     <Compile Include="GolosinaDao.cs" />

@@ -5,14 +5,9 @@
     <title>Proovedores</title>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolderPrincipal" runat="Server">
-    <br />
-    <br />
-    <br />
-    <h1 class="text-center">Proveedores</h1>
-    <br />
-    <br />
-
-
+ 
+    <h1 class="text-center jumbotron">Proveedores</h1>
+ 
     <div class="panel panel-primary col-lg-11">
         <div>
             <br />
@@ -58,13 +53,12 @@
                 runat="server"
                 CssClass="alert-danger">
             </asp:RequiredFieldValidator>
-            <%--          <asp:RangeValidator ID="rv_cuit"
-                ControlToValidate="txt_cuit"
-                runat="server" Type="Integer"
-                ErrorMessage="CUIT ingresado incorrecto"
-                CssClass="alert-danger" Display="Dynamic"
-                Text="*" ValidationGroup="A">
-            </asp:RangeValidator>--%>
+            <asp:RegularExpressionValidator ID="revcuit"
+                runat="server" ControlToValidate="txt_cuit"
+                CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
+                ValidationExpression="[0-9]*\,?[0-9]*">
+            </asp:RegularExpressionValidator>
+
 
             <br />
         </div>
@@ -136,9 +130,23 @@
     <br />
 
     <div class="form-group">
-        <label for="txt_BuscarProveedor">Proveedor a buscar(Por Razon Social):</label>
+        <label>Buscador por Razon Social:</label>
         <asp:TextBox runat="server" ID="txt_ProveedorBuscar" CssClass="form-control" placeholder="" MaxLength="50"></asp:TextBox>
-        <asp:Button ID="btn_Buscar" runat="server" Text="Buscar" class="btn btn-default" OnClick="btn_Buscar_Click" CausesValidation="False" />
+        <asp:RequiredFieldValidator
+            ID="RequiredFieldValidator1"
+            ErrorMessage="Ingrese razon social a buscar"
+            Text="*"
+            ControlToValidate="txt_ProveedorBuscar"
+            ValidationGroup="B"
+            runat="server"
+            CssClass="alert-danger">
+        </asp:RequiredFieldValidator>
+        <div>
+            <asp:ValidationSummary runat="server" ValidationGroup="B" />
+
+        </div>
+        <asp:Button ID="btn_Buscar" runat="server" Text="Buscar" class="btn btn-default" OnClick="btn_Buscar_Click" ValidationGroup="B"  />
+
     </div>
 
 

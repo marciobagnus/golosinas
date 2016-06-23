@@ -1,118 +1,108 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/MasterPage.master" AutoEventWireup="true" CodeFile="PedidosQuery.aspx.cs" Inherits="_Default" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolderPrincipal" Runat="Server">
-      <div class="row">
-        <div class="col-md-5">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolderPrincipal" runat="Server">
+    <div class="row">
+        <div class="col-md-4">
             <div class="panel panel-primary">
-                <div class="panel-heading">
-                    <h4>Buscar</h4>
-                </div>
+
                 <div class="panel-body">
-                
-                        <div class="form-group">
-                        <label for="ddlTipo" id="lblTipo">Tipo Golosina</label>
-                        <asp:DropDownList ID="ddlTipo" runat="server" CssClass="form-control" AppendDataBoundItems="true">
+
+                    <div class="form-group">
+                        <label>Razon Social Proveedor:</label>
+                        <asp:DropDownList ID="ddl_proveedores" runat="server" CssClass="form-control" AppendDataBoundItems="true">
                             <asp:ListItem Value="null">Seleccione..</asp:ListItem>
                         </asp:DropDownList>
 
                     </div>
+
                     <div class="form-group">
-                        <label for="ddlCeliaco" id="lblCeliaco">Celiacos</label>
-                        <asp:DropDownList ID="ddlCeliaco" CssClass="form-control" runat="server" AppendDataBoundItems="true">
-                            <asp:ListItem Value="null">Todos</asp:ListItem>
-                            <asp:ListItem Value="true">Si</asp:ListItem>
-                            <asp:ListItem Value="false">No</asp:ListItem>
-                        </asp:DropDownList>
-                    </div>
-                    <div class="form-group">
-                        <label for="txtPrecioCDesde" id="lblPrecioCDesde">Precio Compra Desde</label>
-                        <asp:TextBox ID="txtPrecioCDesde" CssClass="form-control" runat="server" MaxLength="50"></asp:TextBox>
-                        <asp:RangeValidator ID="rvPrecioC"
-                            ControlToValidate="txtPrecioCDesde"
-                            runat="server" Type="Double"
+                        <label>Fecha Compra Desde:</label>
+                        <asp:TextBox ID="txt_fechaPedidoDesde" placeholder="DD/MM/AAAA" CssClass="form-control" runat="server" MaxLength="50"></asp:TextBox>
+                        <asp:RangeValidator ID="rvpfechaPedidoDesde"
+                            ControlToValidate="txt_fechaPedidoDesde"
+                            runat="server" Type="Date"
                             CssClass="alert-danger" Display="Dynamic"
-                            MaximumValue="50000"
-                            MinimumValue="1"
-                            ErrorMessage="Precio de Compra debe estar entre 1 y 50000"
-                            Text="*" ValidationGroup="A">
-                        </asp:RangeValidator>
-                        <asp:RegularExpressionValidator ID="revPrecioCD"
-                            runat="server" ControlToValidate="txtPrecioCDesde"
-                            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
-                            ValidationExpression="[0-9]*\,?[0-9]*">
-                        </asp:RegularExpressionValidator>
+                            MaximumValue="01/01/2900"
+                            MinimumValue="01/01/1900"
+                            ErrorMessage="Fecha de compra debe estar entre 01/01/1900-01/01/2900"
+                            Text="*" ValidationGroup="A"> </asp:RangeValidator>
+
                     </div>
+
                     <div class="form-group">
-                        <label for="txtPrecioCHasta" id="lblPrecioCHasta">Precio Compra Hasta</label>
-                        <asp:TextBox ID="txtPrecioCHasta" CssClass="form-control" runat="server"></asp:TextBox>
-                        <asp:RangeValidator ID="rvPrecioCH"
-                            ControlToValidate="txtPrecioCHasta"
-                            runat="server" Type="Double"
+                        <label>Fecha Compra Hasta:</label>
+                        <asp:TextBox ID="txt_fechaPedidoHasta" placeholder="DD/MM/AAAA" CssClass="form-control" runat="server"></asp:TextBox>
+                        <asp:RangeValidator ID="rvfechaPedidoHasta"
+                            ControlToValidate="txt_fechaPedidoHasta"
+                            runat="server" Type="Date"
                             CssClass="alert-danger" Display="Dynamic"
-                            MaximumValue="50000"
-                            MinimumValue="1"
-                            ErrorMessage="Precio de Compra debe estar entre 1 y 50000"
-                            Text="*" ValidationGroup="A">
-                        </asp:RangeValidator>
-                        <asp:RegularExpressionValidator ID="revPrecioCH"
-                            runat="server" ControlToValidate="txtPrecioCHasta"
-                            CssClass="alert-danger" Display="Dynamic" ErrorMessage="Ingrese Solo numeros"
-                            ValidationExpression="[0-9]*\,?[0-9]*">
-                        </asp:RegularExpressionValidator>
+                            MaximumValue="01/01/2900"
+                            MinimumValue="01/01/1900"
+                            ErrorMessage="Fecha de compra debe estar entre 01/01/1900-01/01/2900"
+                            Text="*" ValidationGroup="A"> </asp:RangeValidator>
+
+
+                    </div>
+
+                    <div class="form-group">
+                        <label>Empleado:</label>
+                        <asp:TextBox ID="txt_apeNom" placeholder="Ingrese Apellido y Nombre del Empleado" CssClass="form-control" runat="server"></asp:TextBox>
+
+
                     </div>
                 </div>
                 <div class="btn-group-lg text-center">
-                    <asp:Button ID="btnBuscar" Text="Buscar" runat="server" OnClick="btnBuscar_Click" class="btn btn-default" />
+                    <asp:ValidationSummary runat="server" ValidationGroup="A" />
+                    <asp:Button ID="btnBuscar" Text="Buscar" runat="server" OnClick="btnBuscar_Click" class="btn btn-primary" ValidationGroup="A" />
+                    <asp:Button ID="btnLimpiar" Text="Limpiar" runat="server" OnClick="btnLimpiar_Click" class="btn btn-default" />
+                    <br />
                 </div>
-               
+
             </div>
-             <div class="btn-group-lg text-center">
-                    <h3>
-                        <asp:Label ID="lblMensajeExito" class="label label-success" runat="server"></asp:Label></h3>
-                    <h3>
-                        <asp:Label ID="lblMensajeError" class="label label-danger" runat="server"></asp:Label></h3>
-                </div>
+            <div class="btn-group-lg text-center">
+                <h3>
+                    <asp:Label ID="lblMensajeExito" class="label label-success" runat="server"></asp:Label></h3>
+                <h3>
+                    <asp:Label ID="lblMensajeError" class="label label-danger" runat="server"></asp:Label></h3>
+            </div>
+
+
         </div>
-        
-    </div>
-    <div class="row">
-        <div class="col-md-11">
+
+
+        <div class="col-md-8">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h4>Informe de Stock
+                    <h4>Reporte de Compras
                     </h4>
                 </div>
                 <div class="panel-body" id="divGrilla" runat="server">
-                    <asp:GridView ID="gvInforme" runat="server" AutoGenerateColumns="False" CssClass="table table-hover table-striped"
-                        EmptyDataText="No se encontraron golosinas con esta busqueda"
-                        GridLines="None" AllowPaging="True" PageSize="10" Width="438px" 
-                        OnPageIndexChanged="gvInforme_PageIndexChanged">
+                    <asp:GridView ID="gvInforme" runat="server" AutoGenerateColumns="False"
+                        HeaderStyle-BackColor="#009900"
+                        CssClass="table table-hover table-striped"
+                        EmptyDataText="No se encontraron compras en esta busqueda"
+                        GridLines="None" AllowPaging="True" Width="438px"
+                        OnPageIndexChanging="gvInforme_PageIndexChanging">
                         <Columns>
-                            <asp:BoundField DataField="nombre" HeaderText="Nombre" />
-                            <asp:BoundField DataField="nombreTipo" HeaderText="Tipo" />
-                            <asp:TemplateField HeaderText="Celiacos">
-                                <ItemTemplate><%# (Boolean.Parse(Eval("esAptoCeliaco").ToString())) ? "Si" : "No" %></ItemTemplate>
-                            </asp:TemplateField>
-                            <asp:BoundField DataField="precioCompra" HeaderText="Precio Cpra" DataFormatString="${0:0.00}" />
-                            <asp:BoundField DataField="precioVenta" HeaderText="Precio Vta" DataFormatString="${0:0.00}" />
-                            <asp:BoundField DataField="stockActual" HeaderText="Stock Actual" />
-                            <asp:BoundField DataField="stockMinimo" HeaderText="StockMinimo" />
-                            <asp:TemplateField HeaderText="¿Pedir?">
-                                <ItemTemplate><%# (Boolean.Parse(Eval("listoParaPedir").ToString())) ? "Si" : "No" %></ItemTemplate>
-                            </asp:TemplateField>
-
+                            <asp:BoundField DataField="razonSocial" HeaderText="Razon Social" />
+                            <asp:BoundField DataField="fechaPedido" HeaderText="Fecha Pedido" DataFormatString="{0:dd/MM/yyyy}" />
+                            <asp:BoundField DataField="apeNom" HeaderText="Empleado" />
+                            <asp:BoundField DataField="total" HeaderText="Monto Total" />
                         </Columns>
+
+<HeaderStyle BackColor="#009900"></HeaderStyle>
 
                     </asp:GridView>
                 </div>
             </div>
         </div>
-        </div>    
+    </div>
+
 
 
 </asp:Content>
-<asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<asp:Content ID="Content3" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
 </asp:Content>
 

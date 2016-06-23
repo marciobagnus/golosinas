@@ -18,44 +18,32 @@ namespace Dao
             con.Open();
             SqlTransaction tran = con.BeginTransaction();
 
-            //Crear objeto command 
-            SqlCommand cmdA = new SqlCommand();
-            cmdA.Connection = con;
-            cmdA.CommandText = @"SELECT max(idProveedor) FROM[BDGolosinas].[dbo].[Proveedor]";
-            cmdA.Transaction = tran;
-
             try
             {
-                SqlDataReader dr = cmdA.ExecuteReader();
-                if (dr.Read())
-                {
-                    proveedor.idProveedor = 1 + int.Parse(dr[0].ToString());
-                }
-                dr.Close();
-                {
-                    SqlCommand cmd = new SqlCommand();
-                    cmd.Connection = con;
-                    cmd.CommandText = @"INSERT INTO [dbo].[Proveedor]
-                            ([idProveedor]
-                           ,[razonSocial]
+
+                SqlCommand cmd = new SqlCommand();
+                cmd.Connection = con;
+                cmd.CommandText = @"INSERT INTO [dbo].[Proveedor]
+                            ([razonSocial]
                               ,[cuit]
                             ,[fechaAlta]
                            ,[esNacional]
                             ,[domicilio]
-                             ,[idProvincia])
-                            VALUES(@idProovedor,@razonSocial,@cuit, @fechaAlta,@esNacional,@domicilio,@idProvincia)";
+                             ,[idProvincia]
+                                ,[nombre])
+                            VALUES(@razonSocial,@cuit, @fechaAlta,@esNacional,@domicilio,@idProvincia,@nombre)";
 
-                    cmd.Parameters.AddWithValue("@idProovedor", proveedor.idProveedor);
-                    cmd.Parameters.AddWithValue("@razonSocial", proveedor.razonSocial);
-                    cmd.Parameters.AddWithValue("@cuit", proveedor.cuit);
-                    cmd.Parameters.AddWithValue("@fechaAlta", proveedor.fechaAlta);
-                    cmd.Parameters.AddWithValue("@esNacional", proveedor.esNacional);
-                    cmd.Parameters.AddWithValue("@domicilio", proveedor.domicilio);
-                    cmd.Parameters.AddWithValue("@idProvincia", proveedor.idProvincia);
+                cmd.Parameters.AddWithValue("@razonSocial", proveedor.razonSocial);
+                cmd.Parameters.AddWithValue("@cuit", proveedor.cuit);
+                cmd.Parameters.AddWithValue("@fechaAlta", proveedor.fechaAlta);
+                cmd.Parameters.AddWithValue("@esNacional", proveedor.esNacional);
+                cmd.Parameters.AddWithValue("@domicilio", proveedor.domicilio);
+                cmd.Parameters.AddWithValue("@idProvincia", proveedor.idProvincia);
+                cmd.Parameters.AddWithValue("@nombre", proveedor.nombre);
 
-                    cmd.Transaction = tran;
-                    cmd.ExecuteNonQuery();
-                }
+                cmd.Transaction = tran;
+                cmd.ExecuteNonQuery();
+            
                 tran.Commit();
             }
             catch (SqlException ex)
@@ -126,6 +114,7 @@ namespace Dao
             prov.esNacional = (bool)dr[4];
             prov.domicilio = dr[5].ToString();
             prov.idProvincia = int.Parse(dr[6].ToString());
+            prov.nombre = dr[7].ToString();
 
             return prov;
 
@@ -160,6 +149,7 @@ namespace Dao
                            ,[esNacional]=@esNacional
                             ,[domicilio]=@domicilio
                              ,[idProvincia]=@idProvincia
+                              ,[nombre]=@nombre
                                  WHERE [idProveedor]=@idProovedor "
                 ;
             cmd.Parameters.AddWithValue("@idProovedor", proveedor.idProveedor);
@@ -169,6 +159,7 @@ namespace Dao
             cmd.Parameters.AddWithValue("@esNacional", proveedor.esNacional);
             cmd.Parameters.AddWithValue("@domicilio", proveedor.domicilio);
             cmd.Parameters.AddWithValue("@idProvincia", proveedor.idProvincia);
+            cmd.Parameters.AddWithValue("@nombre", proveedor.nombre);
 
             cmd.ExecuteNonQuery();
             con.Close();
@@ -184,7 +175,7 @@ namespace Dao
             cmd.Connection = cn;
             cmd.CommandText = @"SELECT * FROM [dbo].[Proveedor] WHERE razonSocial LIKE @incr";
 
-            cmd.Parameters.AddWithValue("@incr", incr + "%");
+            cmd.Parameters.AddWithValue("@incr", "%"+ incr + "%");
             SqlDataReader dr = cmd.ExecuteReader();
             while (dr.Read())
             {

@@ -60,6 +60,7 @@
 
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="ProveedoresWF.aspx" runat="server">Proveedores ABM</a></li>
+                            <li><a href="PedidosQuery.aspx" runat="server">Reporte de Compras</a></li>
                             <li><a href="carritoPedidosWF.aspx" runat="server">Realizar Pedido</a></li>
 
                         </ul>

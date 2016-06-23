@@ -118,19 +118,24 @@ public partial class GolosinasWF : System.Web.UI.Page
         ID = null;
         btnEliminar.Enabled = false;
         btnEliminar.CssClass = "btn btn-warning";
+        ddl_provincia.SelectedIndex = 0;
+        CargarGrilla();
+        txt_ProveedorBuscar.Text = string.Empty;
     }
     protected void grid_proveedores_SelectedIndexChanged(object sender, EventArgs e)
     {
-        Limpiar();
+      //  Limpiar();
         int idSeleccionado = int.Parse(grid_proveedores.SelectedDataKey.Value.ToString());
         ID = idSeleccionado;
         ProveedoresEntidad provSelec = ProveedoresDao.ObtenerPorId(idSeleccionado);
 
         txt_razonSocial.Text = provSelec.razonSocial;
         txt_cuit.Text = provSelec.cuit.ToString();
-        txt_fechaAlta.Text = provSelec.fechaAlta.ToString();
+        txt_fechaAlta.Text = provSelec.fechaAlta.ToString("d");
         txt_domicilio.Text = provSelec.domicilio;
         chk_esNacional.Checked = provSelec.esNacional;
+        txt_nombre.Text = provSelec.nombre;
+        ddl_provincia.SelectedIndex = provSelec.idProvincia;
         btnEliminar.Enabled = true;
     }
 
@@ -156,11 +161,14 @@ public partial class GolosinasWF : System.Web.UI.Page
 
     protected void btn_Buscar_Click(object sender, EventArgs e)
     {
+      
         //Establezco la fuente de los datos de la grilla
-        grid_proveedores.DataSource = GolosinaDao.ObtenerPorIncremento(txt_ProveedorBuscar.Text);
+        grid_proveedores.DataSource = ProveedoresDao.ObtenerPorIncremento(txt_ProveedorBuscar.Text);
 
         //Indico que llene la grilla
         grid_proveedores.DataBind();
+        txt_ProveedorBuscar.Text = string.Empty;
+
     }
 
     protected void grid_proveedores_PageIndexChanging(object sender, GridViewPageEventArgs e)
@@ -168,4 +176,5 @@ public partial class GolosinasWF : System.Web.UI.Page
         grid_proveedores.PageIndex = e.NewPageIndex;
         CargarGrilla();
     }
+ 
 }

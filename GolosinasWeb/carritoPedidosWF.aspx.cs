@@ -29,7 +29,7 @@ public partial class carritoPedidos : System.Web.UI.Page
         // Check
         if (!Page.IsPostBack)
         {
-           
+
             cargarGrillaGolosinas();
             DateTime hoy = DateTime.Today;
             lbl_fechaPedido.Text = hoy.ToString("dd/MM/yyyy");
@@ -37,6 +37,7 @@ public partial class carritoPedidos : System.Web.UI.Page
             cargarProveedores();
             btn_generarPedido.Visible = false;
             Session["ListaDetallesPedido"] = null;
+            
 
         }
     }
@@ -125,12 +126,14 @@ public partial class carritoPedidos : System.Web.UI.Page
                 // Set to TextBox
                 lbl_subtotal.Text = (currentValue * double.Parse(lbl_precioUnitario.Text.Trim())).ToString();
                 lbl_Cantidad.Text = currentValue.ToString();
-            }
+                lbl_alerta.Text = string.Empty;
+            } 
         }
     }
 
     protected void btnPlus_Click(object sender, EventArgs e)
     {
+
         // Get
         Button btn = sender as Button;
         GridViewRow row = btn.NamingContainer as GridViewRow;
@@ -164,6 +167,7 @@ public partial class carritoPedidos : System.Web.UI.Page
 
     protected void btn_agregarAlCarrito_Click(object sender, EventArgs e)
     {
+        
         // Get
         Button btn = sender as Button;
         GridViewRow row = btn.NamingContainer as GridViewRow;
@@ -174,6 +178,7 @@ public partial class carritoPedidos : System.Web.UI.Page
         Label lbl_subtotal = row.FindControl("lbl_subtotal") as Label;
         Label lbl_cantidad = row.FindControl("lbl_cantidad") as Label;
 
+        if(lbl_cantidad.Text != "0") { 
         int aux = -1;
         for (int i = 0; i < ListaCarrito.Count; i++)
         {
@@ -208,8 +213,13 @@ public partial class carritoPedidos : System.Web.UI.Page
         sumarCarrito();
         lbl_cantidad.Text = "0";
         lbl_subtotal.Text = "0";
+        }
+        else
+        {
+            lbl_alerta.Text = "No se puede agregar golosinas sin elegir cantidad";
+        }
     }
-    
+
     private void cargarGrillaCarrito()
     {
         btn_generarPedido.Visible = true;
@@ -237,7 +247,7 @@ public partial class carritoPedidos : System.Web.UI.Page
         Label lbl_nombreGolosina = row.FindControl("nombreGolosina") as Label;
 
 
-       for(int i=0; i < grillaCarrito.Rows.Count; i++)
+        for (int i = 0; i < grillaCarrito.Rows.Count; i++)
         {
             if (grillaCarrito.Rows[i].Cells[0].Text == ListaCarrito[i].nombreGolosina)
             {
@@ -252,45 +262,61 @@ public partial class carritoPedidos : System.Web.UI.Page
 
     protected void btn_generarPedido_Click(object sender, EventArgs e)
     {
-        PedidoEntidad pedido = new PedidoEntidad();
-        pedido.idProveedor = int.Parse(ddl_proveedores.SelectedValue);
-
-        pedido.fechaPedido = DateTime.Parse(lbl_fechaPedido.Text);
-        pedido.fechaEntrega = DateTime.Parse(lbl_fechaEntrega.Text);
-
-        pedido.total = double.Parse(lbl_precioTotal.Text);
-
-        List<DetallePedidoEntidad> listaDetalles = new List<DetallePedidoEntidad>();
-
-        for (int i = 0; i < ListaCarrito.Count; i++)
+        if (grillaCarrito.Rows.Count != 0 && ddl_proveedores.SelectedIndex != 0)
         {
-            DetallePedidoEntidad detalle = new DetallePedidoEntidad();
+            PedidoEntidad pedido = new PedidoEntidad();
+            pedido.idProveedor = int.Parse(ddl_proveedores.SelectedValue);
 
-            detalle.idGolosina = ListaCarrito[i].idGolosina;
-            detalle.nombreGolosina = ListaCarrito[i].nombreGolosina;
-            detalle.cantidad = ListaCarrito[i].cantidad;
-            detalle.subtotal = ListaCarrito[i].subtotal;
+            pedido.fechaPedido = DateTime.Parse(lbl_fechaPedido.Text);
+            pedido.fechaEntrega = DateTime.Parse(lbl_fechaEntrega.Text);
 
-            listaDetalles.Add(detalle);
+            pedido.total = double.Parse(lbl_precioTotal.Text);
+
+            List<DetallePedidoEntidad> listaDetalles = new List<DetallePedidoEntidad>();
+
+            for (int i = 0; i < ListaCarrito.Count; i++)
+            {
+                DetallePedidoEntidad detalle = new DetallePedidoEntidad();
+
+                detalle.idGolosina = ListaCarrito[i].idGolosina;
+                detalle.nombreGolosina = ListaCarrito[i].nombreGolosina;
+                detalle.cantidad = ListaCarrito[i].cantidad;
+                detalle.subtotal = ListaCarrito[i].subtotal;
+
+                listaDetalles.Add(detalle);
+            }
+
+            PedidosDao.insertarPedido(pedido, listaDetalles);
+            limpiar();
         }
-
-        PedidosDao.insertarPedido(pedido, listaDetalles);
-        limpiar();
+        else
+        {
+            lbl_alerta.Text = "Faltan datos";
+        }
     }
 
     private void limpiar()
     {
-        Session.Clear();
+        Session["ListaDetallesPedido"] = null;
         cargarGrillaCarrito();
         lbl_precioTotal.Text = string.Empty;
         btn_generarPedido.Visible = false;
+        lbl_alerta.Text = string.Empty;
+        ddl_proveedores.SelectedIndex = 0;
 
     }
 
 
     protected void grillaCarrito_PageIndexChanging(object sender, GridViewPageEventArgs e)
     {
+        grillaCarrito.PageIndex = e.NewPageIndex;
+        cargarGrillaCarrito();
+    }
+
+    protected void grillaGolosinas_PageIndexChanging(object sender, GridViewPageEventArgs e)
+    {
         grillaGolosinas.PageIndex = e.NewPageIndex;
         cargarGrillaGolosinas();
+
     }
 }

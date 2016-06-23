@@ -50,7 +50,9 @@
                 <asp:GridView ID="grillaGolosinas" runat="server"
                     AutoGenerateColumns="false"
                     CssClass="table table-bordered bs-table left table-bordered"
-                    HeaderStyle-BackColor="#3399ff">
+                    HeaderStyle-BackColor="#3399ff"
+                    DataKeyNames="idGolosina" GridLines="None" AllowPaging="True" PageSize="5" Width="438px"
+                    OnPageIndexChanging="grillaGolosinas_PageIndexChanging">
                     <Columns>
                         <asp:TemplateField HeaderText="Producto">
                             <ItemTemplate>
@@ -95,8 +97,6 @@
             </div>
             <div class="panel-body">
                 <asp:GridView ID="grillaCarrito" runat="server"
-                    CssClass="table table-bordered bs-table right table-bordered"
-                    AutoGenerateColumns="False"
                     HeaderStyle-BackColor="#009900"
                     DataKeyNames="idGolosina" GridLines="None" AllowPaging="True" PageSize="5" Width="438px"
                     OnPageIndexChanging="grillaCarrito_PageIndexChanging">
@@ -123,8 +123,10 @@
             </div>
         </div>
     </div>
-
-    <asp:Button ID="btn_generarPedido" Text="Generar Pedido" CssClass="btn btn-danger center-block" runat="server" OnClick="btn_generarPedido_Click" />
+    <div>
+        <asp:Label runat="server" ID="lbl_alerta" CssClass="text-danger text-center"></asp:Label>
+        <asp:Button ID="btn_generarPedido" Text="Generar Pedido" CssClass="btn btn-danger center-block" runat="server" OnClick="btn_generarPedido_Click" />
+    </div>
     <br />
     <br />
     <br />

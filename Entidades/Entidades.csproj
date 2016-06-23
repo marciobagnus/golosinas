@@ -49,6 +49,7 @@
     <Compile Include="GolosinaEntidad.cs" />
     <Compile Include="GolosinaQuery.cs" />
     <Compile Include="PedidoEntidad.cs" />
+    <Compile Include="PedidoQuery.cs" />
     <Compile Include="PromocionEntidad.cs" />
     <Compile Include="ProveedoresEntidad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
