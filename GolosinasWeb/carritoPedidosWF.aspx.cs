@@ -265,6 +265,7 @@ public partial class carritoPedidos : System.Web.UI.Page
         EmpleadoEntidad emp = EmpleadoDao.obtenerEmpleadoPorUsuario(user);
         return emp.idEmpleado;
     }
+
     protected void btn_generarPedido_Click(object sender, EventArgs e)
     {
         if (grillaCarrito.Rows.Count != 0 && ddl_proveedores.SelectedIndex != 0)

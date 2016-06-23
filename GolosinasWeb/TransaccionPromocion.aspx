@@ -55,7 +55,7 @@
                     </div>
 
 
-                    <div class="form-group">
+                   <%-- <div class="form-group">
                         <label for="ddlEmpleados" class="col-md-6 control-label">
                             Empleado:</label>
                         <div class="col-md-6">
@@ -69,7 +69,7 @@
                             ValidationGroup="A"
                             CssClass="alert-danger"
                             Display="Dynamic"></asp:RequiredFieldValidator>
-                    </div>
+                    </div>--%>
 
                     <div class="form-group">
                         <label for="txtPorcentaje" class="col-md-6 control-label">

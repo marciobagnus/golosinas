@@ -27,7 +27,7 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         }
         if (!IsPostBack)
         {
-            CargarComboEmpleados();
+            //CargarComboEmpleados();
             CargarComboGolosinas();
             CargarGrilla();
             txtFechaD.Text = DateTime.Today.ToShortDateString();
@@ -35,13 +35,13 @@ public partial class TransaccionPromocion : System.Web.UI.Page
 
     }
 
-    protected void CargarComboEmpleados()
-    {
-        ddlEmpleados.DataSource = EmpleadoDao.ObtenerTodosEmpleados();
-        ddlEmpleados.DataValueField = "idEmpleado";
-        ddlEmpleados.DataTextField = "nombreYApellido";
-        ddlEmpleados.DataBind();
-    }
+    //protected void CargarComboEmpleados()
+    //{
+    //    ddlEmpleados.DataSource = EmpleadoDao.ObtenerTodosEmpleados();
+    //    ddlEmpleados.DataValueField = "idEmpleado";
+    //    ddlEmpleados.DataTextField = "nombreYApellido";
+    //    ddlEmpleados.DataBind();
+    //}
 
     protected void CargarComboGolosinas()
     {
@@ -70,9 +70,10 @@ public partial class TransaccionPromocion : System.Web.UI.Page
                 promocion.fechaDesde = DateTime.Parse(txtFechaD.Text);
                 promocion.fechaHasta = DateTime.Parse(txtFechaH.Text);
                 promocion.total = float.Parse(txtTotal.Text);
-                int id;
-                if (int.TryParse(ddlEmpleados.Text, out id))
-                    promocion.idEmpleado = id;
+                promocion.idEmpleado = obtenerIdEmpleado();
+                //int id;
+                //if (int.TryParse(ddlEmpleados.Text, out id))
+                //    promocion.idEmpleado = id;
                 promocion.descuento = float.Parse(txtDescuento.Text);
 
                 PromocionDao.Insertar(promocion, Detalles);
@@ -103,8 +104,15 @@ public partial class TransaccionPromocion : System.Web.UI.Page
         txtPrecio.Text = string.Empty;
         txtSubtotal.Text = string.Empty;
         txtTotal.Text = string.Empty;
-        ddlEmpleados.SelectedIndex = 0;
+        //ddlEmpleados.SelectedIndex = 0;
         ddlGolosinas.SelectedIndex = 0;
+    }
+    private int? obtenerIdEmpleado()
+    {
+        UsuarioEntidad user = new UsuarioEntidad();
+        user.nombreUsuario = (string)Session["Usuario"];
+        EmpleadoEntidad emp = EmpleadoDao.obtenerEmpleadoPorUsuario(user);
+        return emp.idEmpleado;
     }
 
     protected void btnAgregar_Click(object sender, EventArgs e)
