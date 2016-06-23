@@ -13,7 +13,7 @@ namespace Entidades
         public int idProveedor { get; set; }
         public DateTime fechaPedido { get; set; }
         public DateTime fechaEntrega { get; set; }
-        public int idEmpleado { get; set; }
+        public int? idEmpleado { get; set; }
         public double total { get; set; }
     }
 }

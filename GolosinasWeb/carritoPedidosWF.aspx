@@ -98,7 +98,9 @@
             <div class="panel-body">
                 <asp:GridView ID="grillaCarrito" runat="server"
                     HeaderStyle-BackColor="#009900"
-                    DataKeyNames="idGolosina" GridLines="None" AllowPaging="True" PageSize="5" Width="438px"
+                    AutoGenerateColumns="false"
+                    CssClass="table table-bordered bs-table left table-bordered"
+                    AllowPaging="True" PageSize="5" Width="438px"
                     OnPageIndexChanging="grillaCarrito_PageIndexChanging">
                     <Columns>
                         <asp:BoundField HeaderText="Producto" DataField="nombreGolosina" />

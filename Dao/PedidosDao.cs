@@ -63,7 +63,7 @@ namespace Dao
                 cmdB.Parameters.AddWithValue("@idProveedor", pedido.idProveedor);
                 cmdB.Parameters.AddWithValue("@fechaPedido", pedido.fechaPedido);
                 cmdB.Parameters.AddWithValue("@fechaEntrega", pedido.fechaEntrega);
-                cmdB.Parameters.AddWithValue("@idEmpleado", 1); //pedido.idEmpleado);
+                cmdB.Parameters.AddWithValue("@idEmpleado", pedido.idEmpleado);
                 cmdB.Parameters.AddWithValue("@total", pedido.total);
                 cmdB.Parameters.AddWithValue("@nroPedido", pedido.nroPedido) ;
 

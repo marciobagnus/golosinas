@@ -258,8 +258,13 @@ public partial class carritoPedidos : System.Web.UI.Page
         sumarCarrito();
         cargarGrillaCarrito();
     }
-
-
+    private int? obtenerIdEmpleado()
+    {
+        UsuarioEntidad user = new UsuarioEntidad();
+        user.nombreUsuario = (string)Session["Usuario"];
+        EmpleadoEntidad emp = EmpleadoDao.obtenerEmpleadoPorUsuario(user);
+        return emp.idEmpleado;
+    }
     protected void btn_generarPedido_Click(object sender, EventArgs e)
     {
         if (grillaCarrito.Rows.Count != 0 && ddl_proveedores.SelectedIndex != 0)
@@ -267,6 +272,9 @@ public partial class carritoPedidos : System.Web.UI.Page
             PedidoEntidad pedido = new PedidoEntidad();
             pedido.idProveedor = int.Parse(ddl_proveedores.SelectedValue);
 
+            
+            pedido.idEmpleado = obtenerIdEmpleado();
+                
             pedido.fechaPedido = DateTime.Parse(lbl_fechaPedido.Text);
             pedido.fechaEntrega = DateTime.Parse(lbl_fechaEntrega.Text);
 
