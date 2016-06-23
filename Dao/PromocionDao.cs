@@ -25,21 +25,41 @@ namespace Dao
 
                 SqlCommand cmd = new SqlCommand();
                 cmd.Connection = cn;
-                cmd.CommandText =
+                cmd.Transaction = tran;
+                cmd.CommandText = @" UPDATE ultimoNroPromocion
+                                        SET ultimoNroPromocion = ultimoNroPromocion +1";
+                cmd.ExecuteNonQuery();
+
+
+                SqlCommand cmdA = new SqlCommand();
+                cmdA.Connection = cn;
+                cmdA.Transaction = tran;
+                cmdA.CommandText = "SELECT ultimoNroPromocion FROM ultimoNroPromocion";
+                SqlDataReader dr = cmdA.ExecuteReader();
+                if (dr.Read())
+                    promocion.nroPromocion = int.Parse(dr[0].ToString());
+
+                dr.Close();
+
+                SqlCommand cmdB = new SqlCommand();
+                cmdB.Connection = cn;
+                cmdB.Transaction = tran;
+                cmdB.CommandText =
                     @"INSERT INTO Promocion
-                (nombre, fechaDesde, fechaHasta, total, idEmpleado, descuento)
-                VALUES(@nombre, @fechaDesde, @fechaHasta, @total, @idEmpleado, @descuento) select Scope_Identity() as ID";
+                (nombre, fechaDesde, fechaHasta, total, idEmpleado, descuento, nroPromocion )
+                VALUES(@nombre, @fechaDesde, @fechaHasta, @total, @idEmpleado, @descuento, @nroPromocion) select Scope_Identity() as ID";
 
                 //cmd.Parameters.AddWithValue("@idPromocion", promocion.idPromocion);
-                cmd.Parameters.AddWithValue("@nombre", promocion.nombre);
-                cmd.Parameters.AddWithValue("@fechaDesde", promocion.fechaDesde);
-                cmd.Parameters.AddWithValue("@fechaHasta", promocion.fechaHasta);
-                cmd.Parameters.AddWithValue("@total", promocion.total);
-                cmd.Parameters.AddWithValue("@idEmpleado", promocion.idEmpleado);
-                cmd.Parameters.AddWithValue("@descuento", promocion.descuento);
-                cmd.Transaction = tran;
+                cmdB.Parameters.AddWithValue("@nombre", promocion.nombre);
+                cmdB.Parameters.AddWithValue("@fechaDesde", promocion.fechaDesde);
+                cmdB.Parameters.AddWithValue("@fechaHasta", promocion.fechaHasta);
+                cmdB.Parameters.AddWithValue("@total", promocion.total);
+                cmdB.Parameters.AddWithValue("@idEmpleado", promocion.idEmpleado);
+                cmdB.Parameters.AddWithValue("@descuento", promocion.descuento);
+                cmdB.Parameters.AddWithValue("@nroPromocion", promocion.nroPromocion);
+                cmdB.Transaction = tran;
 
-                promocion.idPromocion = Convert.ToInt32(cmd.ExecuteScalar());
+                promocion.idPromocion = Convert.ToInt32(cmdB.ExecuteScalar());
 
 
                 foreach (DetallePromocionEntidad de in detalles)

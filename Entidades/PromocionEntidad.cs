@@ -9,6 +9,7 @@ namespace Entidades
     public class PromocionEntidad
     {
         public int? idPromocion { get; set; }
+        public int? nroPromocion { get; set; }
         public string nombre { get; set; }
         public DateTime fechaDesde { get; set; }
         public DateTime fechaHasta { get; set; }

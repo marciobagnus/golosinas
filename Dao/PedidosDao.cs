@@ -41,7 +41,8 @@ namespace Dao
                 if (dr.Read())
                     pedido.nroPedido = int.Parse(dr[0].ToString());
 
-                dr.Close();            
+                dr.Close();   
+                         
                 SqlCommand cmdB = new SqlCommand();
                 cmdB.Connection = con;
                 cmdB.Transaction = tran;

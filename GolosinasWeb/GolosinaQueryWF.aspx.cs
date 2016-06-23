@@ -11,6 +11,20 @@ public partial class GolosinaQueryWF : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        string rol = (string)Session["Rol"];
+        bool acceso = false;
+        if (rol == "administrador")
+        {
+            acceso = true;
+        }
+
+        if (!acceso) Response.Redirect("Login.aspx");
+
+        if (Session["Usuario"] == string.Empty)
+        {
+            //Usuario Anónimo
+            Response.Redirect("Login.aspx");
+        }
         if (!IsPostBack)
         {
             CargarCombo();

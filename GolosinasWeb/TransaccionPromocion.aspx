@@ -23,12 +23,7 @@
                             ControlToValidate="txtNombre"
                             ErrorMessage="Ingrese Nombre"
                             CssClass="alert-danger" Display="Dynamic"
-                            ValidationGroup="A" />
-                        <asp:RegularExpressionValidator ID="rvNombre"
-                            runat="server" ErrorMessage="Ingrese un Nombre valido"
-                            ControlToValidate="txtNombre" ValidationExpression="^[a-zA-Z ]*$"
-                            CssClass="alert-danger"
-                            Display="Dynamic"></asp:RegularExpressionValidator>
+                            ValidationGroup="A" />                        
                     </div>
 
                     <div class="form-group">
