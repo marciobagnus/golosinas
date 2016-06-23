@@ -58,9 +58,9 @@ public partial class GolosinasWF : System.Web.UI.Page
             golosina.stockActual = int.Parse(txtStockA.Text);
             golosina.stockMinimo = int.Parse(txtStockM.Text);
             if(int.Parse(txtStockA.Text) > int.Parse(txtStockM.Text))
-                golosina.listoParaPedir = true;
-            else
                 golosina.listoParaPedir = false;
+            else
+                golosina.listoParaPedir = true;
 
 
             if (chkCeliaco.Checked)
