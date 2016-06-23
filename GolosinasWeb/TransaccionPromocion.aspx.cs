@@ -97,7 +97,7 @@ public partial class TransaccionPromocion : System.Web.UI.Page
     {
         txtCantidad.Text = string.Empty;
         txtDescuento.Text = string.Empty;
-        txtFechaD.Text = string.Empty;
+        //txtFechaD.Text = string.Empty;
         txtFechaH.Text = string.Empty;
         txtNombre.Text = string.Empty;
         txtPorcentaje.Text = string.Empty;
